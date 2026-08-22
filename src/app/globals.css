@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --chester-bg: #FDFBF7;
+  --chester-surface: #FFFFFF;
+  --chester-espresso: #1C1917;
+  --chester-gold: #C89B3C;
+  --chester-cognac: #B86B35;
+  --chester-border: #E5DFD3;
+  --chester-stone: #F5EBE1;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background-color: #FDFBF7;
+  color: #1C1917;
+  overflow-x: hidden;
+}
+
+.goog-te-banner-frame,
+.goog-te-gadget,
+.goog-te-banner-frame.skiptranslate,
+body > .skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
