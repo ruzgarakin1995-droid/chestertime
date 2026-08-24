@@ -1,9 +1,10 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Upload, Image as ImageIcon, Sparkles, Check, Plus, AlertCircle, Trash2, Edit3 } from 'lucide-react';
+import { X, Upload, Image as ImageIcon, Sparkles, Check, Plus, AlertCircle, Trash2, Edit3, Crop } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { ChesterProduct } from '../types';
+import { ChesterImageCropper } from './ChesterImageCropper';
 
 interface ChesterAddProductModalProps {
   isOpen: boolean;
@@ -29,6 +30,10 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
   const [imagePreview, setImagePreview] = useState<string>('');
   const [imageUrlInput, setImageUrlInput] = useState<string>('');
   const [imageMode, setImageMode] = useState<'upload' | 'url'>('upload');
+
+  // Cropper state
+  const [isCropping, setIsCropping] = useState(false);
+  const [rawImageForCrop, setRawImageForCrop] = useState<string>('');
   
   const [lengthCm, setLengthCm] = useState(230);
   const [depthCm, setDepthCm] = useState(95);
@@ -60,17 +65,19 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
     }
   }, [productToEdit, isOpen]);
 
-  // File Upload Handler (FileReader -> Base64)
+  // File Upload Handler (FileReader -> Trigger Cropper)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 8 * 1024 * 1024) {
-        setErrorMessage('Görsel boyutu 8MB\'dan küçük olmalıdır.');
+      if (file.size > 10 * 1024 * 1024) {
+        setErrorMessage('Görsel boyutu 10MB\'dan küçük olmalıdır.');
         return;
       }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        const rawData = reader.result as string;
+        setRawImageForCrop(rawData);
+        setIsCropping(true);
         setErrorMessage('');
       };
       reader.readAsDataURL(file);
@@ -79,8 +86,21 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
 
   const handleUrlApply = () => {
     if (imageUrlInput.trim()) {
-      setImagePreview(imageUrlInput.trim());
+      setRawImageForCrop(imageUrlInput.trim());
+      setIsCropping(true);
       setErrorMessage('');
+    }
+  };
+
+  const handleCropComplete = (croppedDataUrl: string) => {
+    setImagePreview(croppedDataUrl);
+    setIsCropping(false);
+  };
+
+  const handleReCrop = () => {
+    if (imagePreview) {
+      setRawImageForCrop(imagePreview);
+      setIsCropping(true);
     }
   };
 
@@ -159,6 +179,8 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
     setBadge('new');
     setImagePreview('');
     setImageUrlInput('');
+    setRawImageForCrop('');
+    setIsCropping(false);
     setLengthCm(230);
     setDepthCm(95);
     setHeightCm(80);
@@ -171,7 +193,7 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto overscroll-contain"
           onClick={(e) => {
-            if (e.target === e.currentTarget) onClose();
+            if (e.target === e.currentTarget && !isCropping) onClose();
           }}
         >
           <motion.div
@@ -194,7 +216,7 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
                   <p className="text-xs text-stone-500 font-light">
                     {productToEdit
                       ? `"${productToEdit.name}" modelinin bilgilerini ve görselini güncelleyin.`
-                      : 'Kategori seçin, görsel yükleyin ve bilgileri doldurarak vitrine ekleyin.'}
+                      : 'Kategori seçin, görsel yükleyin, kırpın ve bilgileri doldurarak vitrine ekleyin.'}
                   </p>
                 </div>
               </div>
@@ -227,116 +249,149 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
                 </div>
               )}
 
-              {/* 1. Görsel Yükleme Bölümü */}
+              {/* 1. Görsel Yükleme & Kırpma Bölümü */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-2">
-                  1. Ürün Fotoğrafı <span className="text-red-500">*</span>
+                  1. Ürün Fotoğrafı & Kırpma / Hizalama <span className="text-red-500">*</span>
                 </label>
 
-                <div className="flex items-center space-x-2 mb-3">
-                  <button
-                    type="button"
-                    onClick={() => setImageMode('upload')}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                      imageMode === 'upload'
-                        ? 'bg-[#1C1917] text-white shadow-sm'
-                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
-                    }`}
-                  >
-                    Bilgisayardan / Galeriden Yükle
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setImageMode('url')}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                      imageMode === 'url'
-                        ? 'bg-[#1C1917] text-white shadow-sm'
-                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
-                    }`}
-                  >
-                    Görsel Bağlantısı (URL) İle Ekle
-                  </button>
-                </div>
-
-                {imageMode === 'upload' ? (
-                  <div>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    {!imagePreview ? (
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-stone-300 hover:border-[#B86B35] rounded-3xl p-8 text-center cursor-pointer bg-stone-50 hover:bg-[#FAF7F2] transition-all group"
-                      >
-                        <div className="w-12 h-12 rounded-full bg-white border border-stone-200 mx-auto flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                          <Upload className="w-5 h-5 text-[#B86B35]" />
-                        </div>
-                        <p className="text-sm font-bold text-stone-800 mb-1">
-                          Fotoğraf seçmek için tıklayın veya sürükleyin
-                        </p>
-                        <p className="text-xs text-stone-500">
-                          PNG, JPG, WEBP formatları desteklenir (Maks. 8MB)
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="relative rounded-2xl overflow-hidden border border-stone-300 bg-stone-100 aspect-[16/9] max-h-64 shadow-inner">
-                        <img
-                          src={imagePreview}
-                          alt="Önizleme"
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-3 right-3 flex items-center space-x-2">
-                          <button
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="px-3 py-1.5 rounded-full bg-white/90 hover:bg-white text-stone-800 text-xs font-bold transition-colors shadow"
-                          >
-                            Fotoğrafı Değiştir
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setImagePreview('')}
-                            className="p-2 rounded-full bg-black/70 hover:bg-black text-white text-xs transition-colors"
-                            title="Görseli Kaldır"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                {/* Cropper View If Active */}
+                {isCropping && rawImageForCrop ? (
+                  <ChesterImageCropper
+                    imageSrc={rawImageForCrop}
+                    onCropComplete={handleCropComplete}
+                    onCancel={() => setIsCropping(false)}
+                    aspectRatio={4 / 3}
+                  />
                 ) : (
-                  <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <input
-                        type="url"
-                        placeholder="https://... veya /images/chester/..."
-                        value={imageUrlInput}
-                        onChange={(e) => setImageUrlInput(e.target.value)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-[#B86B35]"
-                      />
+                  <>
+                    <div className="flex items-center space-x-2 mb-3">
                       <button
                         type="button"
-                        onClick={handleUrlApply}
-                        className="px-4 py-2.5 rounded-xl bg-[#1C1917] text-white text-xs font-bold uppercase hover:bg-[#B86B35] transition-colors"
+                        onClick={() => setImageMode('upload')}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                          imageMode === 'upload'
+                            ? 'bg-[#1C1917] text-white shadow-sm'
+                            : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                        }`}
                       >
-                        Uygula
+                        Bilgisayardan / Galeriden Yükle
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setImageMode('url')}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                          imageMode === 'url'
+                            ? 'bg-[#1C1917] text-white shadow-sm'
+                            : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                        }`}
+                      >
+                        Görsel Bağlantısı (URL) İle Ekle
                       </button>
                     </div>
-                    {imagePreview && (
-                      <div className="relative rounded-2xl overflow-hidden border border-stone-300 bg-stone-100 aspect-[16/9] max-h-56">
-                        <img
-                          src={imagePreview}
-                          alt="Önizleme"
-                          className="w-full h-full object-cover"
+
+                    {imageMode === 'upload' ? (
+                      <div>
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileChange}
+                          accept="image/*"
+                          className="hidden"
                         />
+                        {!imagePreview ? (
+                          <div
+                            onClick={() => fileInputRef.current?.click()}
+                            className="border-2 border-dashed border-stone-300 hover:border-[#B86B35] rounded-3xl p-8 text-center cursor-pointer bg-stone-50 hover:bg-[#FAF7F2] transition-all group"
+                          >
+                            <div className="w-12 h-12 rounded-full bg-white border border-stone-200 mx-auto flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                              <Upload className="w-5 h-5 text-[#B86B35]" />
+                            </div>
+                            <p className="text-sm font-bold text-stone-800 mb-1">
+                              Fotoğraf seçmek için tıklayın veya sürükleyin
+                            </p>
+                            <p className="text-xs text-stone-500">
+                              Seçtikten sonra görseli tam 4:3 vitrin oranına göre kaydırıp kırpabilirsiniz.
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="relative rounded-2xl overflow-hidden border border-stone-300 bg-stone-100 aspect-[4/3] max-w-md mx-auto shadow-md">
+                            <img
+                              src={imagePreview}
+                              alt="Önizleme"
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-between p-3.5">
+                              <button
+                                type="button"
+                                onClick={handleReCrop}
+                                className="px-3.5 py-1.5 rounded-full bg-[#B86B35] hover:bg-[#944D1E] text-white text-xs font-bold transition-all shadow-md flex items-center space-x-1.5 cursor-pointer"
+                              >
+                                <Crop className="w-3.5 h-3.5" />
+                                <span>Yeniden Kırp / Hizala</span>
+                              </button>
+
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  type="button"
+                                  onClick={() => fileInputRef.current?.click()}
+                                  className="px-3 py-1.5 rounded-full bg-white/90 hover:bg-white text-stone-800 text-xs font-bold transition-colors shadow"
+                                >
+                                  Değiştir
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setImagePreview('')}
+                                  className="p-1.5 rounded-full bg-red-600/90 hover:bg-red-600 text-white text-xs transition-colors"
+                                  title="Görseli Kaldır"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="flex gap-2">
+                          <input
+                            type="url"
+                            placeholder="https://... veya /images/chester/..."
+                            value={imageUrlInput}
+                            onChange={(e) => setImageUrlInput(e.target.value)}
+                            className="flex-1 px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-[#B86B35]"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleUrlApply}
+                            className="px-4 py-2.5 rounded-xl bg-[#1C1917] text-white text-xs font-bold uppercase hover:bg-[#B86B35] transition-colors"
+                          >
+                            Kırp & Uygula
+                          </button>
+                        </div>
+                        {imagePreview && (
+                          <div className="relative rounded-2xl overflow-hidden border border-stone-300 bg-stone-100 aspect-[4/3] max-w-md mx-auto shadow-md">
+                            <img
+                              src={imagePreview}
+                              alt="Önizleme"
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute bottom-3 left-3">
+                              <button
+                                type="button"
+                                onClick={handleReCrop}
+                                className="px-3.5 py-1.5 rounded-full bg-[#B86B35] hover:bg-[#944D1E] text-white text-xs font-bold transition-all shadow-md flex items-center space-x-1.5 cursor-pointer"
+                              >
+                                <Crop className="w-3.5 h-3.5" />
+                                <span>Yeniden Kırp / Hizala</span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
-                  </div>
+                  </>
                 )}
               </div>
 
@@ -515,7 +570,7 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
                 </button>
                 <button
                   type="submit"
-                  disabled={isSuccess}
+                  disabled={isSuccess || isCropping}
                   className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#B86B35] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#944D1E] transition-all shadow-lg flex items-center justify-center space-x-2"
                 >
                   <Sparkles className="w-4 h-4" />
