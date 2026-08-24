@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, MapPin, User, ShieldCheck, Lock, Phone, Instagram } from 'lucide-react';
+import Link from 'next/link';
+import { Menu, X, ArrowUpRight, MapPin, User, ShieldCheck, Lock, Phone, Instagram, Layers, Sparkles } from 'lucide-react';
 import { ATELIER_NAME, DISPLAY_PHONE, buildWhatsAppUrl, BUSINESS_ADDRESS, INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../mockData';
 import { LanguageSwitcher } from '../../sofa/components/LanguageSwitcher';
 import { useProducts } from '../context/ProductContext';
@@ -10,7 +11,7 @@ export const ChesterHeader: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
-  const { isAdmin } = useProducts();
+  const { isAdmin, products } = useProducts();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,13 +33,19 @@ export const ChesterHeader: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  const navLinks = [
-    { label: 'Ürün Vitrini', href: '#vitrin' },
-    { label: 'Tüm Koleksiyon', href: '#collection' },
-    { label: 'Müşteri Teslimatları', href: '#deliveries' },
-    { label: 'Kumaş & Deri', href: '#fabric-studio' },
-    { label: 'İskelet & Zanaat', href: '#craftsmanship' },
-    { label: 'Atölyemiz & İletişim', href: '#showroom' },
+  const categoryLinks = [
+    { label: 'Kanepe Çeşitleri', href: '/kategori/kanepe-cesitleri', short: 'Kanepe', key: 'sofa' },
+    { label: 'Berjer Puf Çeşitleri', href: '/kategori/berjer-puf-cesitleri', short: 'Berjer & Puf', key: 'armchair' },
+    { label: 'Oturma Takımları', href: '/kategori/oturma-takimlari', short: 'Oturma Takımları', key: 'set' },
+    { label: 'Köşe L Koltuk Takımları', href: '/kategori/kose-koltuk-takimlari', short: 'Köşe Takımları', key: 'corner' },
+    { label: 'Tüm Modeller', href: '/kategori/tum-modeller', short: 'Tüm Modeller', key: 'all' },
+  ];
+
+  const infoLinks = [
+    { label: 'Müşteri Teslimatları', href: '/#deliveries' },
+    { label: 'Kumaş & Deri', href: '/#fabric-studio' },
+    { label: 'İskelet & Zanaat', href: '/#craftsmanship' },
+    { label: 'Atölyemiz & İletişim', href: '/#showroom' },
   ];
 
   return (
@@ -80,17 +87,17 @@ export const ChesterHeader: React.FC = () => {
       <div className={`transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 sm:py-3 border-b border-stone-200/80' 
-          : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-2.5 sm:py-4'
+          : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-2.5 sm:py-3.5'
       }`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-2">
             
             {/* Brand Logo & Title */}
-            <a href="/" className="flex items-center space-x-2 sm:space-x-3.5 group flex-shrink min-w-0">
+            <Link href="/" className="flex items-center space-x-2 sm:space-x-3.5 group flex-shrink min-w-0">
               <img
                 src="/images/chester/chester_logo.jpg"
                 alt="Chester Time Logo"
-                className="w-11 h-11 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
+                className="w-11 h-11 sm:w-13 sm:h-13 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
               />
               <div className="flex flex-col min-w-0">
                 <span className="font-serif-luxe text-lg sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-none truncate">
@@ -100,19 +107,54 @@ export const ChesterHeader: React.FC = () => {
                   İmalatçıdan Doğrudan Chester
                 </span>
               </div>
-            </a>
+            </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center space-x-6">
-              {navLinks.map((link) => (
-                <a
+            {/* Desktop Nav - Direct Category Pages & Sections */}
+            <nav className="hidden xl:flex items-center space-x-5">
+              {categoryLinks.slice(0, 4).map((link) => (
+                <Link
                   key={link.label}
                   href={link.href}
-                  className="text-xs uppercase tracking-wider font-bold text-stone-700 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                  className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
+              <div className="h-4 w-px bg-stone-300 mx-1"></div>
+              {infoLinks.slice(0, 2).map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/#showroom"
+                className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Atölyemiz
+              </Link>
+            </nav>
+
+            {/* For Medium Desktops (lg to xl) */}
+            <nav className="hidden lg:flex xl:hidden items-center space-x-4">
+              {categoryLinks.slice(0, 3).map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                >
+                  {link.short}
+                </Link>
+              ))}
+              <Link
+                href="/kategori/tum-modeller"
+                className="text-xs uppercase tracking-wider font-bold text-[#B86B35] hover:text-[#944D1E] transition-colors whitespace-nowrap"
+              >
+                Katalog
+              </Link>
             </nav>
 
             {/* Right Header Actions */}
@@ -155,7 +197,7 @@ export const ChesterHeader: React.FC = () => {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
-              {/* Mobile Hamburger Button - High Contrast, Always Clickable & Visible */}
+              {/* Mobile Hamburger Button */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -179,7 +221,7 @@ export const ChesterHeader: React.FC = () => {
           />
 
           {/* Drawer Content */}
-          <div className="relative top-[62px] sm:top-[74px] mx-auto max-w-lg bg-[#FAF8F5] border-b border-stone-300 px-4 py-5 space-y-3 shadow-2xl max-h-[calc(100vh-70px)] overflow-y-auto rounded-b-3xl">
+          <div className="relative top-[62px] sm:top-[74px] mx-auto max-w-lg bg-[#FAF8F5] border-b border-stone-300 px-4 py-5 space-y-3.5 shadow-2xl max-h-[calc(100vh-70px)] overflow-y-auto rounded-b-3xl">
             
             {/* Top Row: Language & Admin Quick Access */}
             <div className="flex items-center justify-between gap-2 p-2 rounded-2xl bg-white border border-stone-200 shadow-xs">
@@ -203,28 +245,75 @@ export const ChesterHeader: React.FC = () => {
               </button>
             </div>
 
-            {/* Navigation Links */}
-            <div className="flex flex-col space-y-1 bg-white rounded-2xl p-2 border border-stone-200 shadow-xs">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-3.5 py-2.5 text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] hover:bg-stone-50 rounded-xl transition-colors"
-                >
-                  <span>{link.label}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
-                </a>
-              ))}
+            {/* 1. KOLTUK KATEGORİLERİ (ÖZEL SAYFALARA YÖNLENDİREN ALANLAR) */}
+            <div className="bg-white rounded-2xl p-2.5 border border-stone-200 shadow-xs">
+              <div className="px-3 pt-1 pb-2 flex items-center justify-between border-b border-stone-100 mb-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#B86B35] flex items-center space-x-1">
+                  <Layers className="w-3 h-3" />
+                  <span>KOLTUK KATEGORİLERİ</span>
+                </span>
+                <span className="text-[10px] text-stone-500 font-semibold">{products.length} Model</span>
+              </div>
+
+              <div className="flex flex-col space-y-1">
+                {categoryLinks.map((link) => {
+                  const count = link.key === 'all'
+                    ? products.length
+                    : products.filter(p => p.category === link.key).length;
+                  return (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2.5 text-xs uppercase tracking-wider font-bold text-stone-900 hover:text-[#B86B35] hover:bg-[#FDFBF7] rounded-xl transition-colors group"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#B86B35] group-hover:scale-125 transition-transform"></span>
+                        <span>{link.label}</span>
+                      </div>
+                      <div className="flex items-center space-x-1.5">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-medium">
+                          {count}
+                        </span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#B86B35] transition-colors" />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Quick CTAs */}
+            {/* 2. ATÖLYE & HİZMETLER */}
+            <div className="bg-white rounded-2xl p-2.5 border border-stone-200 shadow-xs">
+              <div className="px-3 pt-1 pb-2 flex items-center justify-between border-b border-stone-100 mb-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-stone-500 flex items-center space-x-1">
+                  <Sparkles className="w-3 h-3 text-[#B86B35]" />
+                  <span>ATÖLYE & DETAYLAR</span>
+                </span>
+              </div>
+
+              <div className="flex flex-col space-y-1">
+                {infoLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-3 py-2 text-xs uppercase tracking-wider font-semibold text-stone-700 hover:text-[#B86B35] hover:bg-stone-50 rounded-xl transition-colors"
+                  >
+                    <span>{link.label}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Contact Buttons */}
             <div className="space-y-2 pt-1">
               <a
                 href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, koltuk modelleriniz için fiyat teklifi almak istiyorum.`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 rounded-2xl bg-[#1C1917] hover:bg-[#B86B35] text-white text-center text-xs font-bold uppercase tracking-wider shadow-md flex items-center justify-center space-x-2 transition-colors"
+                className="w-full py-3.5 rounded-2xl bg-[#1C1917] hover:bg-[#B86B35] text-white text-center text-xs font-bold uppercase tracking-wider shadow-md flex items-center justify-center space-x-2 transition-colors"
               >
                 <span>WhatsApp İle Hızlı Fiyat Al</span>
                 <ArrowUpRight className="w-4 h-4 text-[#F3C287]" />
@@ -238,11 +327,12 @@ export const ChesterHeader: React.FC = () => {
                 <span>Hemen Ara: {DISPLAY_PHONE}</span>
               </a>
 
-              <div className="pt-2 text-center space-y-1 text-[11px] text-stone-600">
+              <div className="pt-1 text-center space-y-1 text-[11px] text-stone-600">
                 <div>📍 {BUSINESS_ADDRESS}</div>
                 <div>📸 Instagram: <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#B86B35] underline">{INSTAGRAM_HANDLE}</a></div>
               </div>
             </div>
+
           </div>
         </div>
       )}
