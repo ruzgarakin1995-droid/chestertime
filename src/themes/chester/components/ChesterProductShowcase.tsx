@@ -39,14 +39,15 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
   };
 
   const handleDelete = (e: React.MouseEvent, product: ChesterProduct) => {
+    e.preventDefault();
     e.stopPropagation();
-    if (confirm(`"${product.name}" ürününü vitrinden kaldırmak/silmek istediğinize emin misiniz?`)) {
+    if (typeof window !== 'undefined' && window.confirm(`"${product.name}" modelini vitrinden kaldırmak istediğinize emin misiniz?`)) {
       deleteProduct(product.id);
     }
   };
 
   const handleReset = () => {
-    if (confirm('Tüm ürünleri varsayılan fabrika ayarlarına ve kataloğa sıfırlamak istiyor musunuz?')) {
+    if (typeof window !== 'undefined' && window.confirm('Tüm ürünleri varsayılan fabrika ayarlarına ve kataloğa sıfırlamak istiyor musunuz?')) {
       resetToDefaults();
     }
   };
@@ -173,24 +174,24 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
 
                   {/* Admin Edit & Delete Quick Action Controls */}
                   {isAdmin && (
-                    <div className="absolute top-3 right-3 flex items-center space-x-1.5 z-20">
+                    <div className="absolute top-3 right-3 flex items-center space-x-1.5 z-30 pointer-events-auto">
                       <button
                         type="button"
                         onClick={(e) => handleOpenEdit(e, product)}
-                        className="p-2 rounded-full bg-[#1C1917]/90 hover:bg-[#B86B35] text-white transition-all shadow-md"
+                        className="p-2.5 rounded-full bg-[#1C1917] hover:bg-[#B86B35] text-white transition-all shadow-lg hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center"
                         title="Modeli Düzenle"
                         aria-label="Modeli Düzenle"
                       >
-                        <Edit3 className="w-3.5 h-3.5" />
+                        <Edit3 className="w-4 h-4 pointer-events-none" />
                       </button>
                       <button
                         type="button"
                         onClick={(e) => handleDelete(e, product)}
-                        className="p-2 rounded-full bg-red-600/90 hover:bg-red-700 text-white transition-all shadow-md"
+                        className="p-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white transition-all shadow-lg hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center"
                         title="Modeli Vitrinden Kaldır"
                         aria-label="Modeli Kaldır"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4 pointer-events-none" />
                       </button>
                     </div>
                   )}

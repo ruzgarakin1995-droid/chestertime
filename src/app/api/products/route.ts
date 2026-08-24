@@ -45,7 +45,12 @@ function writeStore(store: typeof memoryStore) {
 
 export async function GET() {
   const store = readStore();
-  return NextResponse.json(store, {
+  const deletedSet = new Set(store.deletedIds || []);
+  const cleanStore = {
+    ...store,
+    customProducts: (store.customProducts || []).filter((p: any) => !deletedSet.has(p.id))
+  };
+  return NextResponse.json(cleanStore, {
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
       'Pragma': 'no-cache',
@@ -63,12 +68,14 @@ export async function POST(request: Request) {
 
     if (action === 'add') {
       const newProduct = payload;
-      store.customProducts = [newProduct, ...store.customProducts.filter(p => p.id !== newProduct.id)];
+      store.customProducts = [newProduct, ...store.customProducts.filter((p: any) => p.id !== newProduct.id)];
+      // If previously deleted, remove from deletedIds
+      store.deletedIds = store.deletedIds.filter((id: string) => id !== newProduct.id);
     } else if (action === 'update') {
       const { id, updatedData } = payload;
-      const isCustom = store.customProducts.some(p => p.id === id);
+      const isCustom = store.customProducts.some((p: any) => p.id === id);
       if (isCustom) {
-        store.customProducts = store.customProducts.map(p =>
+        store.customProducts = store.customProducts.map((p: any) =>
           p.id === id ? { ...p, ...updatedData } : p
         );
       } else {
@@ -79,9 +86,14 @@ export async function POST(request: Request) {
       }
     } else if (action === 'delete') {
       const { id } = payload;
-      store.customProducts = store.customProducts.filter(p => p.id !== id);
-      if (!store.deletedIds.includes(id)) {
-        store.deletedIds.push(id);
+      if (id) {
+        if (!store.deletedIds.includes(id)) {
+          store.deletedIds.push(id);
+        }
+        store.customProducts = store.customProducts.filter((p: any) => p.id !== id);
+        if (store.editedProductsMap && store.editedProductsMap[id]) {
+          delete store.editedProductsMap[id];
+        }
       }
     } else if (action === 'reset') {
       store = {
@@ -91,21 +103,20 @@ export async function POST(request: Request) {
       };
     } else if (action === 'sync') {
       if (payload) {
-        // Merge instead of overwrite to prevent other devices from resurrecting deleted products
-        const incomingCustom = payload.customProducts || [];
-        const incomingDeleted = payload.deletedIds || [];
+        const incomingCustom = Array.isArray(payload.customProducts) ? payload.customProducts : [];
+        const incomingDeleted = Array.isArray(payload.deletedIds) ? payload.deletedIds : [];
         const incomingEdited = payload.editedProductsMap || {};
 
-        // Merge custom products (incoming + existing, deduplicated by id)
-        const existingCustomIds = new Set(store.customProducts.map((p: any) => p.id));
-        const newCustom = incomingCustom.filter((p: any) => !existingCustomIds.has(p.id));
-        store.customProducts = [...store.customProducts, ...newCustom];
-
-        // Merge deletedIds (union of both arrays)
+        // Merge deletedIds first
         const mergedDeletedSet = new Set([...store.deletedIds, ...incomingDeleted]);
         store.deletedIds = Array.from(mergedDeletedSet);
 
-        // Merge editedProductsMap (existing edits take precedence)
+        // Filter out ANY deleted products from existing and incoming custom products
+        const existingCustomIds = new Set(store.customProducts.map((p: any) => p.id));
+        const newCustom = incomingCustom.filter((p: any) => !existingCustomIds.has(p.id) && !mergedDeletedSet.has(p.id));
+        store.customProducts = [...store.customProducts, ...newCustom].filter((p: any) => !mergedDeletedSet.has(p.id));
+
+        // Merge editedProductsMap
         store.editedProductsMap = {
           ...incomingEdited,
           ...store.editedProductsMap
@@ -115,7 +126,13 @@ export async function POST(request: Request) {
 
     writeStore(store);
 
-    return NextResponse.json({ success: true, ...store }, {
+    const deletedSet = new Set(store.deletedIds || []);
+    const cleanStore = {
+      ...store,
+      customProducts: (store.customProducts || []).filter((p: any) => !deletedSet.has(p.id))
+    };
+
+    return NextResponse.json({ success: true, ...cleanStore }, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
       }

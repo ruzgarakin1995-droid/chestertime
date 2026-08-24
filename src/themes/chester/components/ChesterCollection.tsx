@@ -2,13 +2,15 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Eye, Sparkles } from 'lucide-react';
 import { ChesterProduct } from '../types';
-import { CHESTER_PRODUCTS, buildWhatsAppUrl, ATELIER_NAME } from '../mockData';
+import { buildWhatsAppUrl, ATELIER_NAME } from '../mockData';
+import { useProducts } from '../context/ProductContext';
 
 interface ChesterCollectionProps {
   onSelectProduct: (product: ChesterProduct) => void;
 }
 
 export const ChesterCollection: React.FC<ChesterCollectionProps> = ({ onSelectProduct }) => {
+  const { products } = useProducts();
   const [activeCategory, setActiveCategory] = useState<'all' | 'sofa' | 'armchair' | 'set' | 'corner'>('all');
 
   const categories = [
@@ -20,8 +22,8 @@ export const ChesterCollection: React.FC<ChesterCollectionProps> = ({ onSelectPr
   ];
 
   const filteredProducts = activeCategory === 'all'
-    ? CHESTER_PRODUCTS
-    : CHESTER_PRODUCTS.filter(p => p.category === activeCategory);
+    ? products
+    : products.filter(p => p.category === activeCategory);
 
   return (
     <section id="collection" className="py-20 lg:py-28 bg-[#14120F] text-white border-t border-b border-[#2E2922]">

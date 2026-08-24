@@ -43,17 +43,24 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (res.ok) {
         const data = await res.json();
         if (data) {
+          const serverDeleted = Array.isArray(data.deletedIds) ? data.deletedIds : [];
+          setDeletedIds(serverDeleted);
+          try {
+            localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(serverDeleted));
+          } catch (e) {}
+
           if (Array.isArray(data.customProducts)) {
-            setCustomProducts(data.customProducts);
-            localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(data.customProducts));
-          }
-          if (Array.isArray(data.deletedIds)) {
-            setDeletedIds(data.deletedIds);
-            localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(data.deletedIds));
+            const cleanCustom = data.customProducts.filter((p: any) => !serverDeleted.includes(p.id));
+            setCustomProducts(cleanCustom);
+            try {
+              localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(cleanCustom));
+            } catch (e) {}
           }
           if (data.editedProductsMap && typeof data.editedProductsMap === 'object') {
             setEditedProductsMap(data.editedProductsMap);
-            localStorage.setItem(STORAGE_EDITED_KEY, JSON.stringify(data.editedProductsMap));
+            try {
+              localStorage.setItem(STORAGE_EDITED_KEY, JSON.stringify(data.editedProductsMap));
+            } catch (e) {}
           }
         }
       }
@@ -78,18 +85,18 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Load from local cache first for instant render, then fetch from server
   useEffect(() => {
     try {
-      const storedCustom = localStorage.getItem(STORAGE_CUSTOM_KEY);
-      let localCustom: ChesterProduct[] = [];
-      if (storedCustom) {
-        localCustom = JSON.parse(storedCustom);
-        setCustomProducts(localCustom);
-      }
-
       const storedDeleted = localStorage.getItem(STORAGE_DELETED_KEY);
       let localDeleted: string[] = [];
       if (storedDeleted) {
         localDeleted = JSON.parse(storedDeleted);
         setDeletedIds(localDeleted);
+      }
+
+      const storedCustom = localStorage.getItem(STORAGE_CUSTOM_KEY);
+      let localCustom: ChesterProduct[] = [];
+      if (storedCustom) {
+        localCustom = JSON.parse(storedCustom).filter((p: any) => !localDeleted.includes(p.id));
+        setCustomProducts(localCustom);
       }
 
       const storedEdited = localStorage.getItem(STORAGE_EDITED_KEY);
@@ -198,6 +205,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
       dimensions: newProductData.dimensions || { length: 230, depth: 95, height: 80 }
     };
 
+    setDeletedIds((prev) => prev.filter((dId) => dId !== id));
     setCustomProducts((prev) => [product, ...prev.filter(p => p.id !== id)]);
     syncActionToServer('add', product);
   };
@@ -219,13 +227,37 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteProduct = (id: string) => {
-    const isCustom = customProducts.some((p) => p.id === id);
-    if (isCustom) {
-      setCustomProducts((prev) => prev.filter((p) => p.id !== id));
-    } else {
-      setDeletedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
-    }
+    if (!id) return;
+    
+    // 1. Remove from customProducts immediately in state
+    setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+    
+    // 2. Add to deletedIds immediately in state
+    setDeletedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
 
+    // 3. Clean from edited map
+    setEditedProductsMap((prev) => {
+      const copy = { ...prev };
+      delete copy[id];
+      return copy;
+    });
+
+    // 4. Update localStorage immediately synchronously
+    try {
+      const storedCustom = localStorage.getItem(STORAGE_CUSTOM_KEY);
+      if (storedCustom) {
+        const filtered = JSON.parse(storedCustom).filter((p: any) => p.id !== id);
+        localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(filtered));
+      }
+      const storedDeleted = localStorage.getItem(STORAGE_DELETED_KEY);
+      const delList: string[] = storedDeleted ? JSON.parse(storedDeleted) : [];
+      if (!delList.includes(id)) {
+        delList.push(id);
+        localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(delList));
+      }
+    } catch (e) {}
+
+    // 5. Send delete to server API
     syncActionToServer('delete', { id });
   };
 
@@ -247,8 +279,9 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   // Compile final product list:
-  // 1. Custom products (global + synced)
-  // 2. Base CHESTER_PRODUCTS (excluding deletedIds and applying edited overrides)
+  // 1. Custom products (excluding any id in deletedIds)
+  // 2. Base CHESTER_PRODUCTS (excluding any id in deletedIds and applying edited overrides)
+  const finalCustom = customProducts.filter((p) => !deletedIds.includes(p.id));
   const baseProcessed = CHESTER_PRODUCTS.filter(
     (p) => !deletedIds.includes(p.id)
   ).map((p) => {
@@ -256,7 +289,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return overrides ? { ...p, ...overrides } : p;
   });
 
-  const products = [...customProducts, ...baseProcessed];
+  const products = [...finalCustom, ...baseProcessed];
 
   return (
     <ProductContext.Provider
