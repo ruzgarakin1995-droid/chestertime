@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { ArrowUpRight, Eye, Sparkles, Plus, Trash2, Edit3, ShieldCheck, RotateCcw, Layers } from 'lucide-react';
 import { ChesterProduct } from '../types';
 import { useProducts } from '../context/ProductContext';
@@ -162,38 +163,45 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
 
           {/* 4 Distinct Luxury Category Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {VISUAL_CATEGORIES.map((cat) => {
+            {VISUAL_CATEGORIES.map((cat, idx) => {
               const count = products.filter(p => p.category === cat.id).length;
               return (
-                <Link
+                <motion.div
                   key={cat.id}
-                  href={`/kategori/${cat.slug}`}
-                  className="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-stone-900 border border-stone-200 hover:border-[#B86B35] shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-end p-5"
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
                 >
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                  
-                  <div className="relative z-10 text-white">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#B86B35] text-white shadow">
-                        {count} Model
-                      </span>
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-[#1C1917] transition-colors">
-                        <ArrowUpRight className="w-4 h-4 text-white group-hover:text-[#1C1917] transition-colors" />
+                  <Link
+                    href={`/kategori/${cat.slug}`}
+                    className="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-stone-900 border border-stone-200 hover:border-[#B86B35] shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-end p-5 block h-full"
+                  >
+                    <img
+                      src={cat.image}
+                      alt={cat.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    
+                    <div className="relative z-10 text-white">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#B86B35] text-white shadow">
+                          {count} Model
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-[#1C1917] transition-colors">
+                          <ArrowUpRight className="w-4 h-4 text-white group-hover:text-[#1C1917] transition-colors" />
+                        </div>
                       </div>
+                      <h3 className="font-serif-luxe text-xl font-bold text-white group-hover:text-[#F3C287] transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[11px] text-stone-300 font-light mt-0.5">
+                        {cat.tagline}
+                      </p>
                     </div>
-                    <h3 className="font-serif-luxe text-xl font-bold text-white group-hover:text-[#F3C287] transition-colors">
-                      {cat.title}
-                    </h3>
-                    <p className="text-[11px] text-stone-300 font-light mt-0.5">
-                      {cat.tagline}
-                    </p>
-                  </div>
-                </Link>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
@@ -227,11 +235,15 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
 
         {/* 8 Product Sample Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {showcaseProducts.map((product) => {
+          {showcaseProducts.map((product, idx) => {
             const isCustom = isCustomProduct(product.id);
             return (
-              <div
+              <motion.div
                 key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: (idx % 4) * 0.08 }}
                 onClick={() => onSelectProduct(product)}
                 className="group bg-white rounded-3xl overflow-hidden border border-stone-200 hover:border-[#B86B35] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer relative"
               >
@@ -315,7 +327,7 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
         </div>

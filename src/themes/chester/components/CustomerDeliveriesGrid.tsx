@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, ArrowUpRight } from 'lucide-react';
 import { ATELIER_NAME, INSTAGRAM_HANDLE, INSTAGRAM_URL, buildWhatsAppUrl } from '../mockData';
 
@@ -101,8 +102,12 @@ export const CustomerDeliveriesGrid: React.FC = () => {
         {/* Deliveries Grid - 9 Items 3x3 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {deliveries.map((item, i) => (
-            <div
+            <motion.div
               key={i}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
               onClick={() => setSelectedDelivery(item)}
               className="group cursor-pointer relative bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col hover:-translate-y-1"
             >
@@ -136,7 +141,7 @@ export const CustomerDeliveriesGrid: React.FC = () => {
                   </h3>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

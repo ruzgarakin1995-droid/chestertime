@@ -1,26 +1,47 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowUpRight, CheckCircle2, ShieldCheck, Sparkles, MapPin } from 'lucide-react';
 import { ATELIER_NAME, ATELIER_TAGLINE, DISPLAY_PHONE, buildWhatsAppUrl, BUSINESS_ADDRESS } from '../mockData';
 
 export const ChesterHero: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
+  const backgroundScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '25%']);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
   return (
-    <section id="hero" className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-6 lg:px-8 bg-[#12100E] overflow-hidden">
+    <section 
+      ref={containerRef}
+      id="hero" 
+      className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-6 lg:px-8 bg-[#12100E] overflow-hidden"
+    >
       
-      {/* Background Hero Visual - 100% Crisp & Clear */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Hero Visual - 100% Crisp & Clear with Smooth Scroll Parallax */}
+      <motion.div 
+        style={{ y: backgroundY, scale: backgroundScale }}
+        className="absolute inset-0 z-0 origin-center"
+      >
         <img
           src="/images/chester/chestertime/product_tan_chester.jpg"
           alt="Chester Time Koltuk İmalat Atölyesi"
-          className="w-full h-full object-cover object-center transform scale-100"
+          className="w-full h-full object-cover object-center"
         />
-        {/* Soft Vignette Overlay: Dark at top & bottom for legibility, 100% clear in middle to showcase the sofa */}
+        {/* Soft Vignette Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none" />
-      </div>
+      </motion.div>
 
       {/* 1. TOP: Headline (Centered & Crisp) */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto text-center pt-2 sm:pt-4">
+      <motion.div 
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative z-10 w-full max-w-5xl mx-auto text-center pt-2 sm:pt-4"
+      >
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,7 +51,7 @@ export const ChesterHero: React.FC = () => {
           <span className="block whitespace-nowrap">Chester Time ile</span>
           <span className="block italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
         </motion.h1>
-      </div>
+      </motion.div>
 
       {/* 2. MIDDLE: Open Viewport Area (Showcases the Sofa Cleanly) */}
       <div className="relative z-10 flex-1 min-h-[140px] sm:min-h-[220px] lg:min-h-[280px] pointer-events-none" />

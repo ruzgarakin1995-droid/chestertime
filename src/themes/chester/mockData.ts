@@ -466,24 +466,6 @@ export const CHESTER_PRODUCTS: ChesterProduct[] = [
     isBestseller: true
   },
   {
-    id: "mansion-bordeaux-corner",
-    name: "Antik Bordo Deri Chester Köşe Takımı",
-    category: "corner",
-    tagline: "Geniş salonlar için mekana özel ölçülü, derin el kapitonesi ve masif torna ayaklar.",
-    description: "Asil bordo derisi, geniş oturum derinliği ve zengin kapitone işçiliğiyle salonunuzun prestij simgesi olacak lüks L köşe.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 320, depth: 250, height: 80 },
-    leatherType: "Antik Eskitme Bordo Silinebilir Deri",
-    tuftingDepth: "Komple El Kapitonesi Sırt & Kollar",
-    cushionFill: "32 DNS HR Sünger + Elyaf Katmanı",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/products/corner_bordeaux_mansion_chester.jpg",
-    gallery: ["/images/chester/products/corner_bordeaux_mansion_chester.jpg", "/images/chester/chestertime/real_deliveries/delivery_9_bordeaux_classic.webp"],
-    availableLeathers: ["Antik Bordo", "Taba", "Zümrüt Yeşili", "Gece Siyahı"],
-    sizeOptions: ["280 × 200 cm", "320 × 250 cm", "360 × 280 cm", "Özel Mekan Ölçüsü"],
-    isNew: true
-  },
-  {
     id: "emerald-chester-corner",
     name: "Zümrüt Yeşili Deri Chester L Köşe",
     category: "corner",
