@@ -33,12 +33,13 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Fetch from server API
+  // Fetch from server API (Single Source of Truth)
   const fetchFromServer = useCallback(async () => {
     try {
       const res = await fetch('/api/products', {
         method: 'GET',
         cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
       });
       if (res.ok) {
         const data = await res.json();
@@ -69,54 +70,64 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   }, []);
 
-  // Post action to server API
-  const syncActionToServer = async (action: 'add' | 'update' | 'delete' | 'reset' | 'sync', payload: any) => {
+  // Post action to server API and sync confirmed state
+  const syncActionToServer = async (action: 'add' | 'update' | 'delete' | 'reset', payload: any) => {
     try {
-      await fetch('/api/products', {
+      const res = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, payload }),
       });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.success) {
+          const serverDeleted = Array.isArray(data.deletedIds) ? data.deletedIds : [];
+          setDeletedIds(serverDeleted);
+          try {
+            localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(serverDeleted));
+          } catch (e) {}
+
+          if (Array.isArray(data.customProducts)) {
+            const cleanCustom = data.customProducts.filter((p: any) => !serverDeleted.includes(p.id));
+            setCustomProducts(cleanCustom);
+            try {
+              localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(cleanCustom));
+            } catch (e) {}
+          }
+
+          if (data.editedProductsMap && typeof data.editedProductsMap === 'object') {
+            setEditedProductsMap(data.editedProductsMap);
+            try {
+              localStorage.setItem(STORAGE_EDITED_KEY, JSON.stringify(data.editedProductsMap));
+            } catch (e) {}
+          }
+        }
+      }
     } catch (e) {
       console.error(`Failed to sync ${action} to server:`, e);
     }
   };
 
-  // Load from local cache first for instant render, then fetch from server
+  // Load from local cache for instant first paint, then immediately sync from server
   useEffect(() => {
     try {
       const storedDeleted = localStorage.getItem(STORAGE_DELETED_KEY);
-      let localDeleted: string[] = [];
       if (storedDeleted) {
-        localDeleted = JSON.parse(storedDeleted);
-        setDeletedIds(localDeleted);
+        setDeletedIds(JSON.parse(storedDeleted));
       }
 
       const storedCustom = localStorage.getItem(STORAGE_CUSTOM_KEY);
-      let localCustom: ChesterProduct[] = [];
       if (storedCustom) {
-        localCustom = JSON.parse(storedCustom).filter((p: any) => !localDeleted.includes(p.id));
-        setCustomProducts(localCustom);
+        setCustomProducts(JSON.parse(storedCustom));
       }
 
       const storedEdited = localStorage.getItem(STORAGE_EDITED_KEY);
-      let localEdited: Record<string, Partial<ChesterProduct>> = {};
       if (storedEdited) {
-        localEdited = JSON.parse(storedEdited);
-        setEditedProductsMap(localEdited);
+        setEditedProductsMap(JSON.parse(storedEdited));
       }
 
       const storedAuth = localStorage.getItem(STORAGE_ADMIN_AUTH_KEY);
       if (storedAuth === 'true') setIsAdmin(true);
-
-      // If local custom products exist, sync them to server on first boot
-      if (localCustom.length > 0 || localDeleted.length > 0 || Object.keys(localEdited).length > 0) {
-        syncActionToServer('sync', {
-          customProducts: localCustom,
-          deletedIds: localDeleted,
-          editedProductsMap: localEdited,
-        });
-      }
     } catch (e) {
       console.error('Failed to load state from localStorage:', e);
     } finally {
@@ -137,8 +148,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     });
 
-    // Poll every 15 seconds so changes made on other devices appear automatically
-    const interval = setInterval(fetchFromServer, 15000);
+    const interval = setInterval(fetchFromServer, 10000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);
