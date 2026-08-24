@@ -3,35 +3,23 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const ChesterSplitIntro: React.FC = () => {
-  const [mounted, setMounted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isSplitting, setIsSplitting] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-
-    // Check if seen in current session
-    const hasSeen = sessionStorage.getItem('chester_intro_seen');
-    if (hasSeen) {
-      return;
-    }
-
-    setIsVisible(true);
-
-    // Prevent body scroll during the intro
+    // Lock body scrolling while intro is active
     document.body.style.overflow = 'hidden';
 
-    // Step 1: Hold the brand logo and text for 2.2 seconds
+    // Step 1: Hold the brand logo, gold glow & typography (1.8s)
     const splitTimer = setTimeout(() => {
       setIsSplitting(true);
-    }, 2200);
+    }, 1800);
 
-    // Step 2: Complete split animation and remove overlay (total 3.4 seconds)
+    // Step 2: Unmount intro and restore body scroll after split finishes (2.9s)
     const finishTimer = setTimeout(() => {
       setIsVisible(false);
-      sessionStorage.setItem('chester_intro_seen', 'true');
       document.body.style.overflow = 'unset';
-    }, 3400);
+    }, 2900);
 
     return () => {
       clearTimeout(splitTimer);
@@ -40,7 +28,7 @@ export const ChesterSplitIntro: React.FC = () => {
     };
   }, []);
 
-  if (!mounted || !isVisible) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden flex flex-col items-center justify-center pointer-events-auto">
