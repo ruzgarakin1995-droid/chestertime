@@ -59,9 +59,9 @@ export const ChesterShowroomVisit: React.FC = () => {
           <div className="lg:col-span-7">
             <div className="rounded-3xl overflow-hidden border border-stone-300 shadow-xl relative aspect-[16/10] bg-stone-900">
               <img
-                src="/images/chester/chestertime/delivery_office_project.jpg"
-                alt="Chester Time Bağcılar Atölye"
-                className="w-full h-full object-cover opacity-90"
+                src="/images/chester/chestertime/chester_atelier_showroom.jpg"
+                alt="Chester Time Bağcılar İmalat & Showroom Atölyesi"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6 sm:p-8">
                 <div className="text-white">

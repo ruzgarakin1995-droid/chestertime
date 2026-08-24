@@ -67,24 +67,24 @@ export const ChesterHeader: React.FC = () => {
       {/* 2. Main Navigation Bar */}
       <div className={`transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-md py-3 border-b border-stone-200/80' 
-          : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-3.5 sm:py-4'
+          ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 sm:py-3 border-b border-stone-200/80' 
+          : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-3 sm:py-4'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             
-            {/* Brand Logo with Image and Bold Typography */}
-            <a href="#hero" className="flex items-center space-x-3 group">
+            {/* Brand Logo with Larger Mobile Size & Premium Typography */}
+            <a href="#hero" className="flex items-center space-x-2.5 sm:space-x-3.5 group flex-shrink-0">
               <img
                 src="/images/chester/chester_logo.jpg"
                 alt="Chester Time Logo"
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-[#B86B35]/40 shadow-sm group-hover:scale-105 transition-transform"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
               />
               <div className="flex flex-col">
                 <span className="font-serif-luxe text-xl sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-none">
                   CHESTER TIME
                 </span>
-                <span className="text-[9px] tracking-[0.16em] uppercase font-sans text-[#B86B35] font-semibold mt-1">
+                <span className="text-[9px] sm:text-[10px] tracking-[0.14em] uppercase font-sans text-[#B86B35] font-semibold mt-1">
                   İmalatçıdan Doğrudan Chester Koltuk
                 </span>
               </div>
@@ -104,13 +104,13 @@ export const ChesterHeader: React.FC = () => {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center space-x-2.5 sm:space-x-3.5">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <LanguageSwitcher />
 
-              {/* Admin / Profile Button */}
+              {/* Desktop Admin / Profile Button */}
               <button
                 onClick={() => setAdminModalOpen(true)}
-                className={`p-2 sm:px-3 sm:py-2 rounded-full text-xs font-bold uppercase transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
+                className={`hidden sm:flex items-center space-x-1.5 px-3 py-2 rounded-full text-xs font-bold uppercase transition-all duration-200 cursor-pointer ${
                   isAdmin
                     ? 'bg-[#1C1917] text-[#F3C287] border border-[#B86B35] shadow'
                     : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
@@ -121,12 +121,12 @@ export const ChesterHeader: React.FC = () => {
                 {isAdmin ? (
                   <>
                     <ShieldCheck className="w-4 h-4 text-[#F3C287]" />
-                    <span className="hidden sm:inline text-[11px] font-semibold">Yönetici</span>
+                    <span className="text-[11px] font-semibold">Yönetici</span>
                   </>
                 ) : (
                   <>
                     <User className="w-4 h-4 text-stone-600" />
-                    <span className="hidden sm:inline text-[11px]">Giriş</span>
+                    <span className="text-[11px]">Giriş</span>
                   </>
                 )}
               </button>
@@ -141,59 +141,90 @@ export const ChesterHeader: React.FC = () => {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
+              {/* Mobile Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-stone-800 hover:text-black focus:outline-none"
+                className="lg:hidden p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 focus:outline-none transition-colors border border-stone-200"
                 aria-label="Menüyü Aç"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-6 h-6 text-[#B86B35]" /> : <Menu className="w-6 h-6 text-stone-900" />}
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Luxury Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-stone-200 px-6 py-6 space-y-4 shadow-2xl">
-          <div className="flex flex-col space-y-3">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-wider font-semibold text-stone-800 hover:text-[#B86B35] py-1.5 border-b border-stone-100"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          <div className="pt-2 flex flex-col space-y-2.5">
+        <div className="lg:hidden fixed inset-x-0 top-[65px] sm:top-[77px] bg-[#FAF8F5] border-b border-stone-300 px-5 py-6 space-y-4 shadow-2xl max-h-[calc(100vh-70px)] overflow-y-auto z-50">
+          
+          {/* Admin Login Quick Card in Drawer */}
+          <div className="p-3.5 rounded-2xl bg-white border border-stone-200 shadow-sm flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isAdmin ? 'bg-amber-100 text-amber-700' : 'bg-stone-100 text-stone-600'}`}>
+                {isAdmin ? <ShieldCheck className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-stone-900">
+                  {isAdmin ? 'Yönetici Modu Aktif' : 'Yönetici Girişi'}
+                </p>
+                <p className="text-[10px] text-stone-500">
+                  {isAdmin ? 'Ürün ekleme ve düzenleme açık' : 'Katalog yönetim paneli şifresi'}
+                </p>
+              </div>
+            </div>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 setAdminModalOpen(true);
               }}
-              className="w-full py-2.5 rounded-xl border border-stone-300 text-stone-800 text-xs font-bold uppercase flex items-center justify-center space-x-2"
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${
+                isAdmin
+                  ? 'bg-stone-900 text-[#F3C287]'
+                  : 'bg-[#B86B35] text-white'
+              }`}
             >
-              <User className="w-4 h-4 text-[#B86B35]" />
-              <span>{isAdmin ? 'Yönetici Modu (Aktif)' : 'Yönetici Girişi'}</span>
+              {isAdmin ? 'Panel' : 'Giriş Yap'}
             </button>
+          </div>
 
+          {/* Navigation Links */}
+          <div className="flex flex-col space-y-1 bg-white rounded-2xl p-2 border border-stone-200 shadow-sm">
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-4 py-3 text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] hover:bg-stone-50 rounded-xl transition-colors"
+              >
+                <span>{link.label}</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+              </a>
+            ))}
+          </div>
+
+          {/* Action Buttons in Drawer */}
+          <div className="pt-1 flex flex-col space-y-2.5">
             <a
               href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, koltuk modelleriniz için fiyat teklifi almak istiyorum.`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3 rounded-xl bg-[#1C1917] text-white text-center text-xs font-bold uppercase tracking-wider"
+              className="w-full py-3.5 rounded-2xl bg-[#1C1917] hover:bg-[#B86B35] text-white text-center text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center space-x-2 transition-colors"
             >
-              WhatsApp İle Fiyat Al
+              <span>WhatsApp İle Hızlı Fiyat Al</span>
+              <ArrowUpRight className="w-4 h-4 text-[#F3C287]" />
             </a>
-            <div className="text-[11px] text-stone-500 text-center">
-              📍 {BUSINESS_ADDRESS}
-            </div>
-            <div className="text-[11px] text-stone-500 text-center">
-              📸 Instagram: {INSTAGRAM_HANDLE}
+
+            <a
+              href={`tel:${DISPLAY_PHONE.replace(/\s+/g, '')}`}
+              className="w-full py-3 rounded-2xl bg-white border border-stone-300 text-stone-900 text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2 shadow-sm"
+            >
+              <span>📞 Hemen Ara: {DISPLAY_PHONE}</span>
+            </a>
+
+            <div className="pt-2 text-center space-y-1 text-[11px] text-stone-600">
+              <div>📍 {BUSINESS_ADDRESS}</div>
+              <div>📸 Instagram: <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#B86B35] underline">{INSTAGRAM_HANDLE}</a></div>
             </div>
           </div>
         </div>
