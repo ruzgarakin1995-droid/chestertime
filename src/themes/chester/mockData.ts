@@ -21,7 +21,7 @@ export const LEATHER_OPTIONS: LeatherOption[] = [
     origin: "1. Sınıf İthal Silinebilir Döşemelik Deri",
     hex: "#B86B35",
     description: "Zamanla yıpranmayan, nemli bezle kolayca silinen, sıcak taba tonuyla evlere sıcaklık katan popüler Chester derisi.",
-    image: "/images/chester/chestertime/product_tan_chester.jpg",
+    image: "/images/chester/products/sofa_vintage_english_tan.jpg",
     thickness: "Dayanıklı & Silinebilir Yüzey"
   },
   {
@@ -31,7 +31,7 @@ export const LEATHER_OPTIONS: LeatherOption[] = [
     origin: "Su İtici & Leke Tutmaz Dokuma",
     hex: "#1E4D36",
     description: "Işık yansımalarıyla zengin duran, yumuşacık dokulu ve kolay temizlenebilen kadife kumaş.",
-    image: "/images/chester/chestertime/product_green_pouf.jpg",
+    image: "/images/chester/products/sofa_emerald_green_velvet_studio.jpg",
     thickness: "Yüksek Gramajlı Sık Dokuma"
   },
   {
@@ -41,7 +41,7 @@ export const LEATHER_OPTIONS: LeatherOption[] = [
     origin: "Klasik Chester Renk Serisi",
     hex: "#6B1D28",
     description: "Klasik salon ve çalışma odalarının vazgeçilmezi olan tok ve asil bordo tonu.",
-    image: "/images/chester/chestertime/product_red_chester.jpg",
+    image: "/images/chester/products/sofa_ruby_bordeaux_chester.jpg",
     thickness: "Ağır Gramajlı Döşemelik"
   },
   {
@@ -51,7 +51,7 @@ export const LEATHER_OPTIONS: LeatherOption[] = [
     origin: "Yumuşak Tuşeli İpeksi Kumaş",
     hex: "#EFE8DC",
     description: "Geniş ve aydınlık salonlar için ferah, leke tutmaz ve çocuklu ailelere uygun yumuşak doku.",
-    image: "/images/chester/chestertime/delivery_cream_chester.jpg",
+    image: "/images/chester/products/sofa_cream_velvet_chester.jpg",
     thickness: "Silinebilir & Nefes Alan"
   },
   {
@@ -61,7 +61,7 @@ export const LEATHER_OPTIONS: LeatherOption[] = [
     origin: "Modern & Karizmatik Seri",
     hex: "#1A1918",
     description: "Ofis, çalışma odası veya modern şömineli salonlar için karizmatik mat siyah deri kaplama.",
-    image: "/images/chester/chestertime/delivery_black_chester.jpg",
+    image: "/images/chester/products/sofa_anthracite_black_chester.jpg",
     thickness: "Ekstra Mukavemetli"
   }
 ];
