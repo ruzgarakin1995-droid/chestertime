@@ -25,10 +25,10 @@ export const ChesterHero: React.FC = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-serif-luxe text-[32px] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[76px] text-white leading-[1.08] font-bold drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
+          className="font-serif-luxe text-[28px] xs:text-[32px] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[76px] text-white leading-[1.15] font-bold drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
         >
-          Chester Time İle<br className="hidden sm:inline" />{" "}
-          <span className="italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
+          <span className="block whitespace-nowrap">Chester Time ile</span>
+          <span className="block italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
         </motion.h1>
       </div>
 
