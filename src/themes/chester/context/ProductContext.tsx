@@ -6,46 +6,102 @@ import { CHESTER_PRODUCTS } from '../mockData';
 interface ProductContextType {
   products: ChesterProduct[];
   addProduct: (newProduct: Omit<ChesterProduct, 'id'> & { id?: string }) => void;
+  updateProduct: (id: string, updatedData: Partial<ChesterProduct>) => void;
   deleteProduct: (id: string) => void;
   resetToDefaults: () => void;
   isCustomProduct: (id: string) => boolean;
+  isAdmin: boolean;
+  login: (password: string) => boolean;
+  logout: () => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'chestertime_custom_products_v1';
+const STORAGE_CUSTOM_KEY = 'chestertime_custom_products_v2';
+const STORAGE_DELETED_KEY = 'chestertime_deleted_product_ids_v2';
+const STORAGE_EDITED_KEY = 'chestertime_edited_products_v2';
+const STORAGE_ADMIN_AUTH_KEY = 'chestertime_admin_authenticated_v2';
+
+// Valid admin passwords
+const VALID_PASSWORDS = ['chester1440', 'chester123', 'admin123', '1440'];
 
 export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [customProducts, setCustomProducts] = useState<ChesterProduct[]>([]);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
+  const [editedProductsMap, setEditedProductsMap] = useState<Record<string, Partial<ChesterProduct>>>({});
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load custom products from localStorage on mount
+  // Load from localStorage on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setCustomProducts(parsed);
-        }
-      }
+      const storedCustom = localStorage.getItem(STORAGE_CUSTOM_KEY);
+      if (storedCustom) setCustomProducts(JSON.parse(storedCustom));
+
+      const storedDeleted = localStorage.getItem(STORAGE_DELETED_KEY);
+      if (storedDeleted) setDeletedIds(JSON.parse(storedDeleted));
+
+      const storedEdited = localStorage.getItem(STORAGE_EDITED_KEY);
+      if (storedEdited) setEditedProductsMap(JSON.parse(storedEdited));
+
+      const storedAuth = localStorage.getItem(STORAGE_ADMIN_AUTH_KEY);
+      if (storedAuth === 'true') setIsAdmin(true);
     } catch (e) {
-      console.error('Failed to load custom products from localStorage:', e);
+      console.error('Failed to load state from localStorage:', e);
     } finally {
       setIsLoaded(true);
     }
   }, []);
 
-  // Save custom products to localStorage whenever they change
+  // Save changes to localStorage
   useEffect(() => {
     if (!isLoaded) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(customProducts));
+      localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(customProducts));
     } catch (e) {
-      console.error('Failed to save custom products to localStorage:', e);
+      console.error('Error saving custom products:', e);
     }
   }, [customProducts, isLoaded]);
 
+  useEffect(() => {
+    if (!isLoaded) return;
+    try {
+      localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deletedIds));
+    } catch (e) {
+      console.error('Error saving deleted products:', e);
+    }
+  }, [deletedIds, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    try {
+      localStorage.setItem(STORAGE_EDITED_KEY, JSON.stringify(editedProductsMap));
+    } catch (e) {
+      console.error('Error saving edited products:', e);
+    }
+  }, [editedProductsMap, isLoaded]);
+
+  // Auth functions
+  const login = (password: string): boolean => {
+    const trimmed = password.trim();
+    if (VALID_PASSWORDS.includes(trimmed)) {
+      setIsAdmin(true);
+      try {
+        localStorage.setItem(STORAGE_ADMIN_AUTH_KEY, 'true');
+      } catch (e) {}
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAdmin(false);
+    try {
+      localStorage.removeItem(STORAGE_ADMIN_AUTH_KEY);
+    } catch (e) {}
+  };
+
+  // Product CRUD
   const addProduct = (newProductData: Omit<ChesterProduct, 'id'> & { id?: string }) => {
     const id = newProductData.id || `custom-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const product: ChesterProduct = {
@@ -64,14 +120,39 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setCustomProducts((prev) => [product, ...prev]);
   };
 
+  const updateProduct = (id: string, updatedData: Partial<ChesterProduct>) => {
+    // If it's a custom product, update it in customProducts list
+    const isCustom = customProducts.some((p) => p.id === id);
+    if (isCustom) {
+      setCustomProducts((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, ...updatedData } : p))
+      );
+    } else {
+      // If it's a base product, store the override in editedProductsMap
+      setEditedProductsMap((prev) => ({
+        ...prev,
+        [id]: { ...(prev[id] || {}), ...updatedData },
+      }));
+    }
+  };
+
   const deleteProduct = (id: string) => {
-    setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+    const isCustom = customProducts.some((p) => p.id === id);
+    if (isCustom) {
+      setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+    } else {
+      setDeletedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    }
   };
 
   const resetToDefaults = () => {
     setCustomProducts([]);
+    setDeletedIds([]);
+    setEditedProductsMap({});
     try {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_CUSTOM_KEY);
+      localStorage.removeItem(STORAGE_DELETED_KEY);
+      localStorage.removeItem(STORAGE_EDITED_KEY);
     } catch (e) {
       console.error('Error clearing localStorage:', e);
     }
@@ -81,17 +162,30 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return customProducts.some((p) => p.id === id);
   };
 
-  // Combine custom products (first) with base catalog products
-  const products = [...customProducts, ...CHESTER_PRODUCTS];
+  // Compile final product list:
+  // 1. Custom products
+  // 2. Base CHESTER_PRODUCTS (excluding deletedIds and applying edited overrides)
+  const baseProcessed = CHESTER_PRODUCTS.filter(
+    (p) => !deletedIds.includes(p.id)
+  ).map((p) => {
+    const overrides = editedProductsMap[p.id];
+    return overrides ? { ...p, ...overrides } : p;
+  });
+
+  const products = [...customProducts, ...baseProcessed];
 
   return (
     <ProductContext.Provider
       value={{
         products,
         addProduct,
+        updateProduct,
         deleteProduct,
         resetToDefaults,
         isCustomProduct,
+        isAdmin,
+        login,
+        logout,
       }}
     >
       {children}

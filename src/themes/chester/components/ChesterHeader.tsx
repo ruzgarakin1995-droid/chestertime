@@ -1,12 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, MapPin } from 'lucide-react';
+import { Menu, X, ArrowUpRight, MapPin, User, ShieldCheck, Lock } from 'lucide-react';
 import { ATELIER_NAME, DISPLAY_PHONE, buildWhatsAppUrl, BUSINESS_ADDRESS, INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../mockData';
 import { LanguageSwitcher } from '../../sofa/components/LanguageSwitcher';
+import { useProducts } from '../context/ProductContext';
+import { ChesterAdminLoginModal } from './ChesterAdminLoginModal';
 
 export const ChesterHeader: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
+  const { isAdmin } = useProducts();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,8 +104,32 @@ export const ChesterHeader: React.FC = () => {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="flex items-center space-x-2.5 sm:space-x-3.5">
               <LanguageSwitcher />
+
+              {/* Admin / Profile Button */}
+              <button
+                onClick={() => setAdminModalOpen(true)}
+                className={`p-2 sm:px-3 sm:py-2 rounded-full text-xs font-bold uppercase transition-all duration-200 flex items-center space-x-1.5 cursor-pointer ${
+                  isAdmin
+                    ? 'bg-[#1C1917] text-[#F3C287] border border-[#B86B35] shadow'
+                    : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                }`}
+                title={isAdmin ? 'Yönetici Modu Aktif (Tıklayın)' : 'Yönetici Girişi'}
+                aria-label="Yönetici Paneli"
+              >
+                {isAdmin ? (
+                  <>
+                    <ShieldCheck className="w-4 h-4 text-[#F3C287]" />
+                    <span className="hidden sm:inline text-[11px] font-semibold">Yönetici</span>
+                  </>
+                ) : (
+                  <>
+                    <User className="w-4 h-4 text-stone-600" />
+                    <span className="hidden sm:inline text-[11px]">Giriş</span>
+                  </>
+                )}
+              </button>
 
               <a
                 href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, koltuk modelleriniz hakkında katalog ve imalat fiyat listesi almak istiyorum.`)}
@@ -142,6 +170,17 @@ export const ChesterHeader: React.FC = () => {
           </div>
 
           <div className="pt-2 flex flex-col space-y-2.5">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setAdminModalOpen(true);
+              }}
+              className="w-full py-2.5 rounded-xl border border-stone-300 text-stone-800 text-xs font-bold uppercase flex items-center justify-center space-x-2"
+            >
+              <User className="w-4 h-4 text-[#B86B35]" />
+              <span>{isAdmin ? 'Yönetici Modu (Aktif)' : 'Yönetici Girişi'}</span>
+            </button>
+
             <a
               href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, koltuk modelleriniz için fiyat teklifi almak istiyorum.`)}
               target="_blank"
@@ -159,6 +198,12 @@ export const ChesterHeader: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Admin Login / Panel Modal */}
+      <ChesterAdminLoginModal
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+      />
     </header>
   );
 };

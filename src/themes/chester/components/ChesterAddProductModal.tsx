@@ -1,17 +1,22 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Upload, Image as ImageIcon, Sparkles, Check, Plus, AlertCircle, Trash2 } from 'lucide-react';
+import { X, Upload, Image as ImageIcon, Sparkles, Check, Plus, AlertCircle, Trash2, Edit3 } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { ChesterProduct } from '../types';
 
 interface ChesterAddProductModalProps {
   isOpen: boolean;
   onClose: () => void;
+  productToEdit?: ChesterProduct | null;
 }
 
-export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ isOpen, onClose }) => {
-  const { addProduct } = useProducts();
+export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
+  isOpen,
+  onClose,
+  productToEdit,
+}) => {
+  const { addProduct, updateProduct } = useProducts();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState('');
@@ -31,6 +36,29 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
 
   const [errorMessage, setErrorMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Populate form if editing existing product
+  useEffect(() => {
+    if (productToEdit) {
+      setName(productToEdit.name || '');
+      setCategory(productToEdit.category || 'sofa');
+      setStartingPrice(productToEdit.startingPrice || '');
+      setTagline(productToEdit.tagline || '');
+      setDescription(productToEdit.description || '');
+      setLeatherType(productToEdit.leatherType || '1. Sınıf Silinebilir Kumaş / Hakiki Deri');
+      if (productToEdit.isBestseller) setBadge('bestseller');
+      else if (productToEdit.isNew) setBadge('new');
+      else setBadge('none');
+      setImagePreview(productToEdit.primaryImage || '');
+      if (productToEdit.dimensions) {
+        setLengthCm(productToEdit.dimensions.length || 230);
+        setDepthCm(productToEdit.dimensions.depth || 95);
+        setHeightCm(productToEdit.dimensions.height || 80);
+      }
+    } else {
+      resetForm();
+    }
+  }, [productToEdit, isOpen]);
 
   // File Upload Handler (FileReader -> Base64)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +107,7 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
 
     const formattedPrice = startingPrice.includes('₺') ? startingPrice.trim() : `${startingPrice.trim()} ₺`;
 
-    addProduct({
+    const productPayload = {
       name: name.trim(),
       category,
       tagline: tagline.trim() || 'Fırınlanmış gürgen iskelet, silinebilir kumaş ve usta işi el kapitonesi.',
@@ -100,7 +128,13 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
       sizeOptions: [`${lengthCm} cm`, 'Standart Ölçü', 'Özel Mekan Ölçüsü'],
       isNew: badge === 'new',
       isBestseller: badge === 'bestseller'
-    });
+    };
+
+    if (productToEdit) {
+      updateProduct(productToEdit.id, productPayload);
+    } else {
+      addProduct(productPayload);
+    }
 
     setIsSuccess(true);
     setTimeout(() => {
@@ -112,7 +146,7 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
       if (vitrinElem) {
         vitrinElem.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 900);
+    }, 700);
   };
 
   const resetForm = () => {
@@ -151,14 +185,16 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
             <div className="flex items-center justify-between px-6 py-5 border-b border-stone-200 bg-[#FAF7F2]">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#B86B35] text-white flex items-center justify-center shadow-md">
-                  <Plus className="w-5 h-5" />
+                  {productToEdit ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                 </div>
                 <div>
                   <h3 className="font-serif-luxe text-xl sm:text-2xl font-bold text-[#1C1917]">
-                    Yeni Koltuk Modeli Ekle
+                    {productToEdit ? 'Modeli Düzenle' : 'Yeni Koltuk Modeli Ekle'}
                   </h3>
                   <p className="text-xs text-stone-500 font-light">
-                    Kategori seçin, görsel yükleyin ve bilgileri doldurarak vitrine ekleyin.
+                    {productToEdit
+                      ? `"${productToEdit.name}" modelinin bilgilerini ve görselini güncelleyin.`
+                      : 'Kategori seçin, görsel yükleyin ve bilgileri doldurarak vitrine ekleyin.'}
                   </p>
                 </div>
               </div>
@@ -185,7 +221,9 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
               {isSuccess && (
                 <div className="flex items-center space-x-2 p-3.5 rounded-2xl bg-emerald-50 text-emerald-800 text-xs border border-emerald-200">
                   <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  <span className="font-semibold">Ürün başarıyla vitrine eklendi! Yönlendiriliyorsunuz...</span>
+                  <span className="font-semibold">
+                    {productToEdit ? 'Değişiklikler başarıyla kaydedildi!' : 'Ürün başarıyla vitrine eklendi!'}
+                  </span>
                 </div>
               )}
 
@@ -251,14 +289,23 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
                           alt="Önizleme"
                           className="w-full h-full object-cover"
                         />
-                        <button
-                          type="button"
-                          onClick={() => setImagePreview('')}
-                          className="absolute top-3 right-3 p-2 rounded-full bg-black/70 hover:bg-black text-white text-xs transition-colors flex items-center space-x-1"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          <span>Görseli Kaldır</span>
-                        </button>
+                        <div className="absolute top-3 right-3 flex items-center space-x-2">
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="px-3 py-1.5 rounded-full bg-white/90 hover:bg-white text-stone-800 text-xs font-bold transition-colors shadow"
+                          >
+                            Fotoğrafı Değiştir
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setImagePreview('')}
+                            className="p-2 rounded-full bg-black/70 hover:bg-black text-white text-xs transition-colors"
+                            title="Görseli Kaldır"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -472,7 +519,13 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({ 
                   className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#B86B35] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#944D1E] transition-all shadow-lg flex items-center justify-center space-x-2"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>{isSuccess ? 'Ekleniyor...' : 'Modeli Vitrine Ekle'}</span>
+                  <span>
+                    {isSuccess
+                      ? 'Kaydediliyor...'
+                      : productToEdit
+                      ? 'Değişiklikleri Kaydet'
+                      : 'Modeli Vitrine Ekle'}
+                  </span>
                 </button>
               </div>
 
