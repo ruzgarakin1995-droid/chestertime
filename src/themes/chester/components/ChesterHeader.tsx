@@ -321,16 +321,26 @@ export const ChesterHeader: React.FC = () => {
               </a>
 
               <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#833ab4]/10 via-[#fd1d1d]/10 to-[#fcb045]/10 hover:from-[#833ab4]/20 hover:via-[#fd1d1d]/20 hover:to-[#fcb045]/20 border border-[#E1306C]/30 text-stone-900 text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2 shadow-xs transition-all"
+              >
+                <Instagram className="w-4 h-4 text-[#E1306C]" />
+                <span>Instagram'da İncele ({INSTAGRAM_HANDLE})</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-stone-400" />
+              </a>
+
+              <a
                 href={`tel:${DISPLAY_PHONE.replace(/\s+/g, '')}`}
-                className="w-full py-2.5 rounded-2xl bg-white border border-stone-300 text-stone-900 text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2 shadow-xs"
+                className="w-full py-2.5 rounded-2xl bg-white border border-stone-200 text-stone-800 text-center text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2 shadow-xs hover:bg-stone-50 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-[#B86B35]" />
                 <span>Hemen Ara: {DISPLAY_PHONE}</span>
               </a>
 
-              <div className="pt-1 text-center space-y-1 text-[11px] text-stone-600">
+              <div className="pt-1 text-center space-y-0.5 text-[11px] text-stone-500">
                 <div>📍 {BUSINESS_ADDRESS}</div>
-                <div>📸 Instagram: <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#B86B35] underline">{INSTAGRAM_HANDLE}</a></div>
               </div>
             </div>
 
