@@ -89,47 +89,67 @@ export const ChesterHeader: React.FC = () => {
           ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 sm:py-3 border-b border-stone-200/80' 
           : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-2.5 sm:py-3.5'
       }`}>
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4 lg:gap-8">
             
-            {/* Brand Logo & Title */}
-            <Link href="/" className="flex items-center space-x-2 sm:space-x-3.5 group flex-shrink min-w-0">
+            {/* Brand Logo & Title - Fixed Width, Never Squished */}
+            <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
               <img
                 src="/images/chester/chester_logo.jpg"
                 alt="Chester Time Logo"
                 className="w-11 h-11 sm:w-13 sm:h-13 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
               />
-              <div className="flex flex-col min-w-0">
-                <span className="font-serif-luxe text-lg sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-none truncate">
+              <div className="flex flex-col flex-shrink-0">
+                <span className="font-serif-luxe text-xl sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-tight whitespace-nowrap">
                   CHESTER TIME
                 </span>
-                <span className="text-[8.5px] sm:text-[10px] tracking-[0.1em] sm:tracking-[0.14em] uppercase font-sans text-[#B86B35] font-semibold mt-0.5 sm:mt-1 truncate">
+                <span className="text-[9px] sm:text-[10px] tracking-[0.12em] uppercase font-sans text-[#B86B35] font-semibold whitespace-nowrap">
                   İmalatçıdan Doğrudan Chester
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav - Direct Category Pages & Sections */}
-            <nav className="hidden xl:flex items-center space-x-5">
-              {categoryLinks.slice(0, 4).map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="h-4 w-px bg-stone-300 mx-1"></div>
-              {infoLinks.slice(0, 2).map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            {/* Desktop Nav - Clean, Simplified & Spacious */}
+            <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7 flex-shrink-0">
+              <Link
+                href="/kategori/kanepe-cesitleri"
+                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Kanepeler
+              </Link>
+              <Link
+                href="/kategori/berjer-puf-cesitleri"
+                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Berjer & Puf
+              </Link>
+              <Link
+                href="/kategori/kose-koltuk-takimlari"
+                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Köşe Takımları
+              </Link>
+              <Link
+                href="/kategori/oturma-takimlari"
+                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Oturma Takımları
+              </Link>
+              <Link
+                href="/kategori/tum-modeller"
+                className="text-xs uppercase tracking-wider font-bold text-[#B86B35] hover:text-[#944D1E] transition-colors whitespace-nowrap flex items-center space-x-1"
+              >
+                <span>Tüm Katalog</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#B86B35]/10 text-[#B86B35] font-bold">
+                  {products.length}
+                </span>
+              </Link>
+              <Link
+                href="/#deliveries"
+                className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+              >
+                Teslimatlar
+              </Link>
               <Link
                 href="/#showroom"
                 className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
@@ -138,27 +158,8 @@ export const ChesterHeader: React.FC = () => {
               </Link>
             </nav>
 
-            {/* For Medium Desktops (lg to xl) */}
-            <nav className="hidden lg:flex xl:hidden items-center space-x-4">
-              {categoryLinks.slice(0, 3).map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
-                >
-                  {link.short}
-                </Link>
-              ))}
-              <Link
-                href="/kategori/tum-modeller"
-                className="text-xs uppercase tracking-wider font-bold text-[#B86B35] hover:text-[#944D1E] transition-colors whitespace-nowrap"
-              >
-                Katalog
-              </Link>
-            </nav>
-
             {/* Right Header Actions */}
-            <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
               <div className="flex items-center">
                 <LanguageSwitcher isCompact />
               </div>
@@ -245,7 +246,7 @@ export const ChesterHeader: React.FC = () => {
               </button>
             </div>
 
-            {/* 1. KOLTUK KATEGORİLERİ (ÖZEL SAYFALARA YÖNLENDİREN ALANLAR) */}
+            {/* 1. KOLTUK KATEGORİLERİ */}
             <div className="bg-white rounded-2xl p-2.5 border border-stone-200 shadow-xs">
               <div className="px-3 pt-1 pb-2 flex items-center justify-between border-b border-stone-100 mb-1">
                 <span className="text-[10px] uppercase font-bold tracking-widest text-[#B86B35] flex items-center space-x-1">

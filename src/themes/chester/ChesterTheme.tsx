@@ -16,6 +16,7 @@ import { ChesterShowroomVisit } from './components/ChesterShowroomVisit';
 import { ChesterQuickModal } from './components/ChesterQuickModal';
 import { ChesterWhatsAppFloat } from './components/ChesterWhatsAppFloat';
 import { ChesterFooter } from './components/ChesterFooter';
+import { ChesterSplitIntro } from './components/ChesterSplitIntro';
 
 const RevealSection: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
   <motion.div
@@ -66,6 +67,9 @@ export const ChesterTheme: React.FC = () => {
     <ProductProvider>
       <div className="min-h-screen bg-[#FDFBF7] text-[#1C1917] selection:bg-[#B86B35] selection:text-white font-sans antialiased relative">
         
+        {/* Luxury Split Screen Intro Preloader */}
+        <ChesterSplitIntro />
+
         {/* Top Reading Progress Bar */}
         <motion.div
           style={{ scaleX }}
