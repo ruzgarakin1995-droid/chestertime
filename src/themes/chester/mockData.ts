@@ -262,40 +262,6 @@ export const CHESTER_PRODUCTS: ChesterProduct[] = [
     availableLeathers: ["Mat Siyah", "Antrasit", "Koyu Kahve", "Taba"],
     sizeOptions: ["210 cm", "235 cm Standart", "265 cm Geniş", "Özel Ölçü"]
   },
-  {
-    id: "dyna-kanepe",
-    name: "Dyna Kanepe (Tasarım Koltuk)",
-    category: "sofa",
-    tagline: "Şık, kaliteli ve unutulmaz. Modern düz kol tasarımı ve masif ahşap ayaklar.",
-    description: "Chester Time özel tasarım serisinin en çok satan modeli. Hem modern hem sıcak havasıyla salonunuzun havasını değiştirir.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 230, depth: 95, height: 80 },
-    leatherType: "Antik Taba Deri / Silinebilir Kumaş",
-    tuftingDepth: "Düz Modern Hatlar & Masif Ayak",
-    cushionFill: "32 DNS HR Sünger + Elyaf Dolgu",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/chestertime/product_dyna_kanepe.jpg",
-    gallery: ["/images/chester/chestertime/product_dyna_kanepe.jpg", "/images/chester/chestertime/delivery_camel_straight.jpg"],
-    availableLeathers: ["Antik Taba Deri", "Krem Kumaş", "Koyu Yeşil", "Antrasit"],
-    sizeOptions: ["210 cm (3'lü)", "230 cm (Geniş 3'lü)", "260 cm (4'lü)", "Özel Ölçü"]
-  },
-  {
-    id: "lord-tan-chester",
-    name: "Klasik Taba 3'lü Chester Koltuk",
-    category: "sofa",
-    tagline: "Derin el kapitonesi, fırınlanmış gürgen iskelet ve el çakımı kabaralar.",
-    description: "Zamanın eskitemediği klasik Chesterfield formu. Bağcılar atölyemizde usta eller tarafından tek tek düğümlenir.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 235, depth: 100, height: 78 },
-    leatherType: "1. Kalite Taba Silinebilir Deri",
-    tuftingDepth: "Derin El Kapitonesi & Çelik Çekme Düğmeler",
-    cushionFill: "32 DNS Çökmeyen Sünger Katmanı",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/chestertime/product_tan_chester.jpg",
-    gallery: ["/images/chester/chestertime/product_tan_chester.jpg", "/images/chester/chestertime/delivery_tan_ottoman.jpg"],
-    availableLeathers: ["Antik Taba", "Puro Kahve", "Bordo", "Ekru Krem"],
-    sizeOptions: ["210 cm", "235 cm Standart", "270 cm Geniş", "Özel Salon Ölçüsü"]
-  },
 
   // 2. BERJER VE PUF ÇEŞİTLERİ (armchair)
   {
@@ -353,24 +319,6 @@ export const CHESTER_PRODUCTS: ChesterProduct[] = [
     isNew: true
   },
   {
-    id: "fireplace-tan-armchair",
-    name: "Şömine Başı Klasik Taba Chester Berjer",
-    category: "armchair",
-    tagline: "Sıcak taba rengi, derin kapitone sırt formu ve rahat okuma koltuğu ergonomisi.",
-    description: "Şömine karşısı, çalışma odası veya salon köşesi için el işçiliğiyle üretilmiş nostaljik ve lüks tekli Chester berjer.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 95, depth: 90, height: 82 },
-    leatherType: "Antik Taba Silinebilir Hakiki Deri Dokulu",
-    tuftingDepth: "Derin El Kapitonesi Sırt & Kollar",
-    cushionFill: "32 DNS Yumuşak Oturum Süngeri",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/products/armchair_fireplace_tan_chester.jpg",
-    gallery: ["/images/chester/products/armchair_fireplace_tan_chester.jpg", "/images/chester/chestertime/product_berjer_puf.jpg"],
-    availableLeathers: ["Antik Taba", "Puro Kahve", "Bordo", "Siyah"],
-    sizeOptions: ["Tekli Berjer", "İkili Berjer Seti", "Berjer + Puf Takımı"],
-    isBestseller: true
-  },
-  {
     id: "purple-velvet-armchair",
     name: "Mürdüm Moru Kadife Chester Berjer",
     category: "armchair",
@@ -387,23 +335,6 @@ export const CHESTER_PRODUCTS: ChesterProduct[] = [
     availableLeathers: ["Mürdüm Moru", "Zümrüt Yeşili", "Gece Mavisi", "Hardal Sarısı"],
     sizeOptions: ["Tekli Berjer", "Berjer + Puf Takımı"],
     isNew: true
-  },
-  {
-    id: "chester-berjer-puf-set",
-    name: "Chester Berjer & Ayak Pufu Seti",
-    category: "armchair",
-    tagline: "Yüksek sırtlı ergonomik okuma berjeri ve uyumlu kapitone ayak pufu.",
-    description: "Şömine önü, TV karşısı veya salon köşesi için hem dinlendirici hem çok şık berjer ve puf takımı. Masif torna ayaklı.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 85, depth: 90, height: 105 },
-    leatherType: "Antik Taba Deri / Nubuk",
-    tuftingDepth: "Sırt Kapitone Düğmeleme",
-    cushionFill: "Soft Oturum Süngeri",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/chestertime/product_berjer_puf.jpg",
-    gallery: ["/images/chester/chestertime/product_berjer_puf.jpg", "/images/chester/chestertime/product_purple_berjer.jpg"],
-    availableLeathers: ["Antik Taba", "Puro Kahve", "Zümrüt Yeşili", "Mürdüm Moru"],
-    sizeOptions: ["Tek Berjer", "Berjer + Ayak Pufu Takımı"]
   },
   {
     id: "green-round-pouf-daybed",
@@ -475,23 +406,6 @@ export const CHESTER_PRODUCTS: ChesterProduct[] = [
     gallery: ["/images/chester/chestertime/real_deliveries/delivery_4_executive_office.webp"],
     availableLeathers: ["Taba", "Kahve", "Siyah", "Bordo"],
     sizeOptions: ["3+1+1 Makam Takımı", "3+2+1 Takım", "Özel Ofis Ölçüsü"]
-  },
-  {
-    id: "office-cafe-project",
-    name: "Cafe, Restoran & VIP Loca Projeleri",
-    category: "set",
-    tagline: "Toplu ve ticari mekanlar için yüksek dayanımlı imalat fiyatlı Chester üretimi.",
-    description: "Kafe, restoran, otel lobisi ve yönetici ofisleri için adetli üretim ve mekan projelendirme desteği.",
-    startingPrice: "Fiyat Al",
-    dimensions: { length: 200, depth: 90, height: 78 },
-    leatherType: "Ağır Hizmet Silinebilir Deri",
-    tuftingDepth: "Yoğun Kullanıma Uygun Güçlendirilmiş Düğüm",
-    cushionFill: "35 DNS Yüksek Yoğunluklu Sünger",
-    warranty: "10 Yıl Masif İskelet Garantisi",
-    primaryImage: "/images/chester/chestertime/delivery_office_project.jpg",
-    gallery: ["/images/chester/chestertime/delivery_office_project.jpg"],
-    availableLeathers: ["Taba", "Kahve", "Siyah", "Bordo", "Yeşil"],
-    sizeOptions: ["Adetli Özel İmalat", "Sedir Tipi Chester", "Loca Koltukları"]
   },
 
   // 4. KÖŞE L KOLTUK TAKIMLARI (corner)

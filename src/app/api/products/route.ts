@@ -91,10 +91,24 @@ export async function POST(request: Request) {
       };
     } else if (action === 'sync') {
       if (payload) {
-        store = {
-          customProducts: payload.customProducts || store.customProducts,
-          deletedIds: payload.deletedIds || store.deletedIds,
-          editedProductsMap: payload.editedProductsMap || store.editedProductsMap
+        // Merge instead of overwrite to prevent other devices from resurrecting deleted products
+        const incomingCustom = payload.customProducts || [];
+        const incomingDeleted = payload.deletedIds || [];
+        const incomingEdited = payload.editedProductsMap || {};
+
+        // Merge custom products (incoming + existing, deduplicated by id)
+        const existingCustomIds = new Set(store.customProducts.map((p: any) => p.id));
+        const newCustom = incomingCustom.filter((p: any) => !existingCustomIds.has(p.id));
+        store.customProducts = [...store.customProducts, ...newCustom];
+
+        // Merge deletedIds (union of both arrays)
+        const mergedDeletedSet = new Set([...store.deletedIds, ...incomingDeleted]);
+        store.deletedIds = Array.from(mergedDeletedSet);
+
+        // Merge editedProductsMap (existing edits take precedence)
+        store.editedProductsMap = {
+          ...incomingEdited,
+          ...store.editedProductsMap
         };
       }
     }
