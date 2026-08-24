@@ -29,41 +29,16 @@ export const ChesterHero: React.FC = () => {
           {/* Mobile Luxury Glassmorphic Card Container for Crystal Clear Legibility */}
           <div className="p-5 sm:p-7 lg:p-0 rounded-3xl bg-black/50 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.6)] lg:bg-transparent lg:border-none lg:backdrop-blur-none lg:shadow-none">
             
-            {/* Top Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex flex-wrap items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] sm:text-[11px] font-sans uppercase tracking-wider mb-4 sm:mb-6 shadow-sm"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#F3C287] flex-shrink-0" />
-              <span className="font-semibold text-[#F3C287]">Doğrudan İmalatçıdan</span>
-              <span className="text-white/60">•</span>
-              <span>Masif Gürgen İskelet</span>
-              <span className="text-white/60">•</span>
-              <span>Kişiye Özel Üretim</span>
-            </motion.div>
-
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-serif-luxe text-[30px] sm:text-5xl lg:text-6xl text-white leading-[1.12] mb-3 sm:mb-5 font-bold drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+              className="font-serif-luxe text-[34px] sm:text-5xl lg:text-6xl text-white leading-[1.12] mb-6 sm:mb-8 font-bold drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
             >
               Chester Time İle<br />
               <span className="italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
             </motion.h1>
-
-            {/* Subtitle with High Contrast */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xs sm:text-base text-stone-100 font-light leading-relaxed mb-6 sm:mb-8 max-w-2xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]"
-            >
-              Aracısız, doğrudan Bağcılar atölyemizden imalat fiyatlarıyla! 1. sınıf masif gürgen karkas, silinebilir kumaş/deri ve usta işi el kapitonesiyle istediğiniz renk ve ölçüde üretiyoruz.
-            </motion.p>
 
             {/* Action CTAs */}
             <motion.div
