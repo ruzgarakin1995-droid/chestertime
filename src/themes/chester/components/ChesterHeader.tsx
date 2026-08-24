@@ -117,8 +117,8 @@ export const ChesterHeader: React.FC = () => {
 
             {/* Right Header Actions */}
             <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
-              <div className="hidden sm:block">
-                <LanguageSwitcher />
+              <div className="flex items-center">
+                <LanguageSwitcher isCompact />
               </div>
 
               {/* Desktop Admin / Profile Button */}
