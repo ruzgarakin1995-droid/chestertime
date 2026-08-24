@@ -205,19 +205,20 @@ export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ 
                 </div>
 
                 {/* Minimal Clean Card Content */}
-                <div className="p-5 flex-1 flex items-center justify-between">
+                <div className="p-5 flex-1 flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-sans font-bold text-lg sm:text-[19px] tracking-tight text-[#1C1917] group-hover:text-[#B86B35] transition-colors leading-snug">
+                    <h3 className="font-sans font-bold text-base sm:text-lg tracking-tight text-[#1C1917] group-hover:text-[#B86B35] transition-colors leading-snug">
                       {product.name}
                     </h3>
-                    <span className="text-xs text-stone-500 font-medium">
-                      İmalat Fiyatı: <strong className="text-stone-900 font-bold whitespace-nowrap">{product.startingPrice}</strong>
-                    </span>
+                    <div className="flex items-center space-x-1.5 text-xs text-stone-500 mt-1">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      <span>Özel İmalat • İstenilen Ölçü & Renk</span>
+                    </div>
                   </div>
 
-                  <div className="flex items-center space-x-2 text-xs font-bold text-[#B86B35] group-hover:translate-x-1 transition-transform flex-shrink-0 ml-3">
-                    <span>İncele</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                  <div className="flex items-center space-x-1.5 px-4 py-2 rounded-full bg-[#1C1917] text-white text-xs font-bold uppercase tracking-wider group-hover:bg-[#B86B35] transition-all flex-shrink-0 shadow-sm">
+                    <span>Fiyat Al</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
 

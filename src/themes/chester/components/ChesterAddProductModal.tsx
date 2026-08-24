@@ -116,23 +116,17 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
       setErrorMessage('Lütfen ürün için bir fotoğraf yükleyin veya görsel URL\'si girin.');
       return;
     }
-    if (!startingPrice.trim()) {
-      setErrorMessage('Lütfen imalat fiyatını belirtiniz (Örn: 27.500 ₺).');
-      return;
-    }
     if (!description.trim()) {
       setErrorMessage('Lütfen ürün açıklamasını giriniz.');
       return;
     }
-
-    const formattedPrice = startingPrice.includes('₺') ? startingPrice.trim() : `${startingPrice.trim()} ₺`;
 
     const productPayload = {
       name: name.trim(),
       category,
       tagline: tagline.trim() || 'Fırınlanmış gürgen iskelet, silinebilir kumaş ve usta işi el kapitonesi.',
       description: description.trim(),
-      startingPrice: formattedPrice,
+      startingPrice: 'Fiyat Al',
       primaryImage: imagePreview,
       gallery: [imagePreview],
       leatherType: leatherType.trim() || '1. Sınıf Silinebilir Kumaş / Deri',
@@ -426,35 +420,19 @@ export const ChesterAddProductModal: React.FC<ChesterAddProductModalProps> = ({
                 </div>
               </div>
 
-              {/* 3. Başlık ve Fiyat */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-                <div className="sm:col-span-8">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1.5">
-                    3. Ürün Başlığı / Model Adı <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Örn: Vizon Kadife 3'lü Chester Koltuk"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl border border-stone-300 text-sm focus:outline-none focus:border-[#B86B35] focus:ring-2 focus:ring-[#B86B35]/20 bg-stone-50/50"
-                  />
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1.5">
-                    İmalat Fiyatı <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Örn: 27.500 ₺"
-                    value={startingPrice}
-                    onChange={(e) => setStartingPrice(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl border border-stone-300 text-sm font-semibold focus:outline-none focus:border-[#B86B35] focus:ring-2 focus:ring-[#B86B35]/20 bg-stone-50/50"
-                  />
-                </div>
+              {/* 3. Başlık */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-stone-800 mb-1.5">
+                  3. Ürün Başlığı / Model Adı <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Örn: Vizon Kadife 3'lü Chester Koltuk"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-2xl border border-stone-300 text-sm focus:outline-none focus:border-[#B86B35] focus:ring-2 focus:ring-[#B86B35]/20 bg-stone-50/50"
+                />
               </div>
 
               {/* 4. Slogan & Kumaş / Deri Tipi */}

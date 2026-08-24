@@ -50,7 +50,7 @@ export const ChesterQuickModal: React.FC<ChesterQuickModalProps> = ({ product, o
 
   const handleWhatsAppOrder = () => {
     if (!product) return;
-    const msg = `Merhaba ${ATELIER_NAME}, "${product.name}" modeli hakkında sipariş vermek / fiyat almak istiyorum:\n\n• Model: ${product.name}\n• Seçilen Renk/Kumaş: ${selectedColor}\n• Tercih Edilen Ölçü: ${selectedSize}\n• Belirtilen Fiyat: ${product.startingPrice}\n\nİmalat süresi ve teslimat hakkında bilgi rica ediyorum.`;
+    const msg = `Merhaba ${ATELIER_NAME}, "${product.name}" modeli hakkında fiyat teklifi ve detaylı bilgi almak istiyorum:\n\n• Model: ${product.name}\n• Seçilen Renk/Kumaş: ${selectedColor}\n• Tercih Edilen Ölçü: ${selectedSize}\n\nİmalat süresi ve güncel fiyat teklifi hakkında bilgi rica ediyorum.`;
     window.open(buildWhatsAppUrl(msg), '_blank');
   };
 
@@ -218,11 +218,11 @@ export const ChesterQuickModal: React.FC<ChesterQuickModalProps> = ({ product, o
 
                 <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex flex-col flex-shrink-0">
-                    <span className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold leading-none mb-1">
-                      İMALATÇI FİYATI
+                    <span className="text-[10px] uppercase tracking-wider text-[#B86B35] font-bold leading-none mb-1">
+                      İMALATÇIDAN DOĞRUDAN
                     </span>
-                    <span className="font-serif-luxe text-2xl sm:text-3xl font-bold text-[#1C1917] whitespace-nowrap leading-none">
-                      {product.startingPrice}
+                    <span className="font-serif-luxe text-xl sm:text-2xl font-bold text-[#1C1917] whitespace-nowrap leading-none">
+                      Özel İmalat Teklifi
                     </span>
                   </div>
 
@@ -231,7 +231,7 @@ export const ChesterQuickModal: React.FC<ChesterQuickModalProps> = ({ product, o
                     className="px-6 py-3.5 rounded-full bg-[#1C1917] text-white hover:bg-[#B86B35] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center space-x-2 shadow-lg cursor-pointer whitespace-nowrap"
                   >
                     <MessageCircle className="w-4 h-4 text-white" />
-                    <span>WhatsApp'tan Fiyat & Sipariş</span>
+                    <span>WhatsApp'tan Fiyat Al</span>
                   </button>
                 </div>
 

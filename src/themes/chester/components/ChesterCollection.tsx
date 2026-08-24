@@ -100,8 +100,8 @@ export const ChesterCollection: React.FC<ChesterCollectionProps> = ({ onSelectPr
                     <span className="text-[11px] font-sans uppercase tracking-widest text-[#D4AF37] font-semibold">
                       {product.leatherType}
                     </span>
-                    <span className="text-xs font-bold text-white">
-                      {product.startingPrice}
+                    <span className="text-xs font-bold text-[#D4AF37]">
+                      Fiyat Al
                     </span>
                   </div>
 
