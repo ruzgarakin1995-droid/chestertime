@@ -9,13 +9,14 @@ interface ChesterShowcaseGridProps {
 }
 
 export const ChesterShowcaseGrid: React.FC<ChesterShowcaseGridProps> = ({ onSelectProduct }) => {
-  const [activeCategory, setActiveCategory] = useState<'all' | 'sofa' | 'corner' | 'armchair'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'sofa' | 'armchair' | 'set' | 'corner'>('all');
 
   const categories = [
-    { id: "all", label: "Tüm Showroom Teşhiri" },
-    { id: "sofa", label: "3'lü & 4'lü Koltuklar" },
-    { id: "corner", label: "L & Köşe Chester" },
-    { id: "armchair", label: "Kulaklı Berjerler" },
+    { id: "all", label: "TÜM MODELLER" },
+    { id: "sofa", label: "Kanepe Çeşitleri" },
+    { id: "armchair", label: "Berjer Puf Çeşitleri" },
+    { id: "set", label: "Oturma Takımları" },
+    { id: "corner", label: "Köşe L Koltuk Takımları" },
   ];
 
   const filteredProducts = activeCategory === 'all'

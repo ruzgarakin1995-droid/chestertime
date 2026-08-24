@@ -9,14 +9,14 @@ interface ChesterProductShowcaseProps {
 }
 
 export const ChesterProductShowcase: React.FC<ChesterProductShowcaseProps> = ({ onSelectProduct }) => {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'sofa' | 'armchair' | 'corner' | 'set'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'sofa' | 'armchair' | 'set' | 'corner'>('all');
 
   const categories = [
-    { id: 'all', label: 'Tüm Modeller' },
-    { id: 'sofa', label: 'Dyna & Chester Kanepe' },
-    { id: 'armchair', label: 'Berjer & Puf Seti' },
-    { id: 'corner', label: 'Köşe & L Koltuk' },
-    { id: 'set', label: 'Kafe & Ofis Projeleri' },
+    { id: 'all', label: 'TÜM MODELLER' },
+    { id: 'sofa', label: 'Kanepe Çeşitleri' },
+    { id: 'armchair', label: 'Berjer Puf Çeşitleri' },
+    { id: 'set', label: 'Oturma Takımları' },
+    { id: 'corner', label: 'Köşe L Koltuk Takımları' },
   ];
 
   const filteredProducts = activeFilter === 'all'

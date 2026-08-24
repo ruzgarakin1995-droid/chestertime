@@ -12,9 +12,21 @@ export const ChesterFooter: React.FC = () => {
           
           {/* Brand Info */}
           <div className="lg:col-span-4 space-y-4">
-            <span className="font-serif-luxe text-2xl text-white font-bold tracking-wider block">
-              CHESTER TIME
-            </span>
+            <div className="flex items-center space-x-3">
+              <img
+                src="/images/chester/chester_logo.jpg"
+                alt="Chester Time Logo"
+                className="w-12 h-12 rounded-full object-cover border border-[#F3C287]/40 shadow-md"
+              />
+              <div>
+                <span className="font-serif-luxe text-2xl text-white font-bold tracking-wider block">
+                  CHESTER TIME
+                </span>
+                <span className="text-[9px] tracking-[0.16em] uppercase font-sans text-[#F3C287] font-semibold block">
+                  İmalatçıdan Chester Koltuk
+                </span>
+              </div>
+            </div>
             <p className="text-xs text-stone-400 font-light leading-relaxed">
               {ATELIER_TAGLINE}. Masif gürgen iskelet, silinebilir 1. sınıf kumaşlar ve usta işi el kapitonesi.
             </p>

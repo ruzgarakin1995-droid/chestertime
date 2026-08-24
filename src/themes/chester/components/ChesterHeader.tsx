@@ -69,14 +69,21 @@ export const ChesterHeader: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             
-            {/* Brand Logo with Clean Bold Font */}
-            <a href="#hero" className="flex flex-col group">
-              <span className="font-serif-luxe text-2xl sm:text-3xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase">
-                CHESTER TIME
-              </span>
-              <span className="text-[9px] tracking-[0.2em] uppercase font-sans text-[#B86B35] font-semibold -mt-1">
-                İmalatçıdan Doğrudan Chester Koltuk
-              </span>
+            {/* Brand Logo with Image and Bold Typography */}
+            <a href="#hero" className="flex items-center space-x-3 group">
+              <img
+                src="/images/chester/chester_logo.jpg"
+                alt="Chester Time Logo"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-[#B86B35]/40 shadow-sm group-hover:scale-105 transition-transform"
+              />
+              <div className="flex flex-col">
+                <span className="font-serif-luxe text-xl sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-none">
+                  CHESTER TIME
+                </span>
+                <span className="text-[9px] tracking-[0.16em] uppercase font-sans text-[#B86B35] font-semibold mt-1">
+                  İmalatçıdan Doğrudan Chester Koltuk
+                </span>
+              </div>
             </a>
 
             {/* Desktop Nav */}

@@ -5,9 +5,9 @@ export const metadata: Metadata = {
   title: 'Chester Time | İmalatçıdan Doğrudan Chester Koltuk & Özel Üretim',
   description: 'Bağcılar Kirazlı atölyemizde; masif fırınlanmış gürgen iskelet, silinebilir kumaş/deri ve usta işi el kapitonesiyle kişiye özel Chester koltuk üretimi.',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/images/hy-favicon.jpg',
+    icon: '/images/chester/chester_logo.jpg',
+    shortcut: '/images/chester/chester_logo.jpg',
+    apple: '/images/chester/chester_logo.jpg',
   }
 };
 
@@ -19,8 +19,8 @@ export default function RootLayout({
   return (
     <html lang="tr" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/images/hy-favicon.jpg" />
+        <link rel="icon" href="/images/chester/chester_logo.jpg" />
+        <link rel="apple-touch-icon" href="/images/chester/chester_logo.jpg" />
         <meta name="theme-color" content="#161412" />
         <script
           dangerouslySetInnerHTML={{
