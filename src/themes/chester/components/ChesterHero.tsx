@@ -6,88 +6,87 @@ import { ATELIER_NAME, ATELIER_TAGLINE, DISPLAY_PHONE, buildWhatsAppUrl, BUSINES
 
 export const ChesterHero: React.FC = () => {
   return (
-    <section id="hero" className="relative min-h-[85vh] lg:min-h-screen flex items-center justify-center pt-28 sm:pt-32 pb-16 lg:pb-24 px-4 sm:px-6 lg:px-8 bg-[#12100E] overflow-hidden">
+    <section id="hero" className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-6 lg:px-8 bg-[#12100E] overflow-hidden">
       
-      {/* Background Hero Visual with Central Luxury Contrast */}
+      {/* Background Hero Visual - 100% Crisp & Clear */}
       <div className="absolute inset-0 z-0">
         <img
           src="/images/chester/chestertime/product_tan_chester.jpg"
           alt="Chester Time Koltuk İmalat Atölyesi"
-          className="w-full h-full object-cover object-center transform scale-105"
+          className="w-full h-full object-cover object-center transform scale-100"
         />
-        {/* Full Central Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#12100E]/95 via-[#12100E]/65 to-[#12100E]/85" />
-        <div className="absolute inset-0 bg-black/35" />
+        {/* Soft Vignette Overlay: Dark at top & bottom for legibility, 100% clear in middle to showcase the sofa */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none" />
       </div>
 
-      {/* Hero Content - Centered & Enlarged */}
-      <div className="relative z-10 max-w-5xl mx-auto w-full text-center flex flex-col items-center justify-center">
+      {/* 1. TOP: Headline (Centered & Crisp) */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto text-center pt-2 sm:pt-4">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="font-serif-luxe text-[32px] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[76px] text-white leading-[1.08] font-bold drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
+        >
+          Chester Time İle<br className="hidden sm:inline" />{" "}
+          <span className="italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
+        </motion.h1>
+      </div>
+
+      {/* 2. MIDDLE: Open Viewport Area (Showcases the Sofa Cleanly) */}
+      <div className="relative z-10 flex-1 min-h-[140px] sm:min-h-[220px] lg:min-h-[280px] pointer-events-none" />
+
+      {/* 3. BOTTOM: Action Buttons & Trust Badges */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center space-y-4 sm:space-y-6">
         
-        {/* Luxury Center Container */}
-        <div className="w-full max-w-4xl p-6 sm:p-10 lg:p-0 rounded-3xl bg-black/40 backdrop-blur-md border border-white/15 lg:bg-transparent lg:border-none lg:backdrop-blur-none shadow-2xl lg:shadow-none">
-          
-          {/* Headline - Significantly Enlarged & Centered */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-serif-luxe text-[38px] sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[84px] text-white leading-[1.06] mb-6 sm:mb-8 font-bold drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] text-center"
+        {/* Action CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto"
+        >
+          <a
+            href="#vitrin"
+            className="w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-[#B86B35] text-white font-bold text-xs sm:text-sm uppercase tracking-widest text-center hover:bg-[#944D1E] transition-all duration-200 shadow-2xl hover:scale-105"
           >
-            Chester Time İle<br />
-            <span className="italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
-          </motion.h1>
+            Ürün Vitrinini İnceleyin
+          </a>
 
-          {/* Action CTAs - Centered */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center space-y-3.5 sm:space-y-0 sm:space-x-5 max-w-md sm:max-w-none mx-auto"
+          <a
+            href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, salonum için koltuk modelleriniz hakkında bilgi ve imalat fiyat teklifi almak istiyorum.`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/30 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-lg hover:scale-105"
           >
-            <a
-              href="#vitrin"
-              className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#B86B35] text-white font-bold text-xs sm:text-sm uppercase tracking-widest text-center hover:bg-[#944D1E] transition-all duration-200 shadow-2xl hover:scale-105"
-            >
-              Ürün Vitrinini İnceleyin
-            </a>
+            <span>WhatsApp İle Hızlı Fiyat Al</span>
+            <ArrowUpRight className="w-4 h-4 text-[#F3C287]" />
+          </a>
+        </motion.div>
 
-            <a
-              href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, salonum için koltuk modelleriniz hakkında bilgi ve imalat fiyat teklifi almak istiyorum.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-4 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/35 text-white font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow hover:scale-105"
-            >
-              <span>WhatsApp İle Hızlı Fiyat Al</span>
-              <ArrowUpRight className="w-4 h-4 text-[#F3C287]" />
-            </a>
-          </motion.div>
-
-          {/* Live Trust Badges - Centered */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mt-8 sm:mt-12 pt-6 border-t border-white/20 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-stone-200 font-light"
-          >
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-[#F3C287] flex-shrink-0" />
-              <span>İmalatçı Fiyatı</span>
-            </div>
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-[#F3C287] flex-shrink-0" />
-              <span>Masif Gürgen İskelet</span>
-            </div>
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-[#F3C287] flex-shrink-0" />
-              <span>100+ Renk Seçeneği</span>
-            </div>
-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-[#F3C287] flex-shrink-0" />
-              <span>İstanbul İçi Teslimat</span>
-            </div>
-          </motion.div>
-
-        </div>
+        {/* Live Trust Badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="pt-2 sm:pt-4 border-t border-white/20 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] sm:text-xs text-stone-200 font-light"
+        >
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/15 shadow-sm">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#F3C287] flex-shrink-0" />
+            <span>İmalatçı Fiyatı</span>
+          </div>
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/15 shadow-sm">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#F3C287] flex-shrink-0" />
+            <span>Masif Gürgen İskelet</span>
+          </div>
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/15 shadow-sm">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#F3C287] flex-shrink-0" />
+            <span>100+ Renk Seçeneği</span>
+          </div>
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/15 shadow-sm">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#F3C287] flex-shrink-0" />
+            <span>İstanbul İçi Teslimat</span>
+          </div>
+        </motion.div>
 
       </div>
     </section>
