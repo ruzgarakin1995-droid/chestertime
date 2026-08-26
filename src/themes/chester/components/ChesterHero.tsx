@@ -48,8 +48,8 @@ export const ChesterHero: React.FC = () => {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="font-serif-luxe text-[clamp(26px,9vw,35px)] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[76px] text-white leading-[1.12] font-bold drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
         >
-          <span className="block whitespace-nowrap">Özel Tasarım Chester</span>
-          <span className="block italic font-light text-[#F3C287]">Koltuk İmalatı</span>
+          <span className="block whitespace-nowrap">Chester Time ile</span>
+          <span className="block italic font-light text-[#F3C287]">Evinizi Yenileyin.</span>
         </motion.h1>
       </motion.div>
 
