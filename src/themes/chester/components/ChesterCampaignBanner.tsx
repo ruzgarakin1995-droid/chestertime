@@ -83,7 +83,7 @@ export const ChesterCampaignBanner: React.FC = () => {
         >
           
           {/* Left Column: Image with navigation arrows (50% on desktop) */}
-          <div className="lg:col-span-6 relative aspect-[16/10] lg:aspect-auto min-h-[300px] lg:min-h-full overflow-hidden bg-stone-900">
+          <div className="lg:col-span-6 min-w-0 relative h-[240px] sm:h-[320px] lg:h-auto lg:min-h-full overflow-hidden bg-stone-900">
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeSlide.id}
@@ -116,7 +116,7 @@ export const ChesterCampaignBanner: React.FC = () => {
           </div>
 
           {/* Right Column: Campaign Content (50% on desktop) */}
-          <div className="lg:col-span-6 p-8 sm:p-12 lg:p-14 flex flex-col justify-between items-center text-center bg-[#FAF7F2] border-t lg:border-t-0 lg:border-l border-stone-200/80">
+          <div className="lg:col-span-6 min-w-0 p-8 sm:p-12 lg:p-14 flex flex-col justify-between items-center text-center bg-[#FAF7F2] border-t lg:border-t-0 lg:border-l border-stone-200/80">
             
             {/* Top Empty Placeholder for Balance */}
             <div className="w-full flex justify-center">

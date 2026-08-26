@@ -9,31 +9,46 @@ export const ChesterWhatsAppFloat: React.FC = () => {
   const [showCloud, setShowCloud] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Periodic opening every 20 seconds
+  // Periodic opening every 20 seconds (desktop only — on mobile the expanded
+  // pill + cloud would cover content, so small screens stay collapsed until tapped)
   useEffect(() => {
-    const initialOpen = setTimeout(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    let initialOpen: ReturnType<typeof setTimeout> | undefined;
+    let autoClose: ReturnType<typeof setTimeout> | undefined;
+    let interval: ReturnType<typeof setInterval> | undefined;
+
+    const openBriefly = () => {
       setIsExpanded(true);
       setShowCloud(true);
-
-      setTimeout(() => {
+      autoClose = setTimeout(() => {
         setIsExpanded(false);
         setShowCloud(false);
       }, 6000);
-    }, 2500);
+    };
 
-    const interval = setInterval(() => {
-      setIsExpanded(true);
-      setShowCloud(true);
+    const start = () => {
+      if (interval) return;
+      initialOpen = setTimeout(openBriefly, 2500);
+      interval = setInterval(openBriefly, 20000);
+    };
 
-      setTimeout(() => {
-        setIsExpanded(false);
-        setShowCloud(false);
-      }, 6000);
-    }, 20000);
+    const stop = () => {
+      if (initialOpen) clearTimeout(initialOpen);
+      if (autoClose) clearTimeout(autoClose);
+      if (interval) clearInterval(interval);
+      initialOpen = autoClose = undefined;
+      interval = undefined;
+      setIsExpanded(false);
+      setShowCloud(false);
+    };
+
+    if (mq.matches) start();
+    const onChange = (e: MediaQueryListEvent) => (e.matches ? start() : stop());
+    mq.addEventListener('change', onChange);
 
     return () => {
-      clearTimeout(initialOpen);
-      clearInterval(interval);
+      mq.removeEventListener('change', onChange);
+      stop();
     };
   }, []);
 

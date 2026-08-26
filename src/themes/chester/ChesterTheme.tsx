@@ -13,6 +13,7 @@ import { CustomerDeliveriesGrid } from './components/CustomerDeliveriesGrid';
 import { FabricLeatherStudio } from './components/FabricLeatherStudio';
 import { CraftsmanshipStandards } from './components/CraftsmanshipStandards';
 import { ChesterShowroomVisit } from './components/ChesterShowroomVisit';
+import { ChesterServiceLinks } from './components/ChesterServiceLinks';
 import { ChesterQuickModal } from './components/ChesterQuickModal';
 import { ChesterWhatsAppFloat } from './components/ChesterWhatsAppFloat';
 import { ChesterFooter } from './components/ChesterFooter';
@@ -91,6 +92,11 @@ export const ChesterTheme: React.FC = () => {
           {/* 2. ÜRÜN VİTRİNİ (ÖNE ÇIKAN MODELLER) */}
           <RevealSection>
             <ChesterProductShowcase onSelectProduct={(p) => setSelectedProduct(p)} />
+          </RevealSection>
+
+          {/* 2.5 HİZMETLERİMİZ — SEO landing sayfalarına iç linkleme */}
+          <RevealSection>
+            <ChesterServiceLinks />
           </RevealSection>
 
           {/* 3. MÜŞTERİ TESLİMATLARI & GERÇEK EV KARELERİ */}

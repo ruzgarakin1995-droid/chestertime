@@ -52,27 +52,28 @@ export const ChesterHeader: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-40">
       
       {/* 1. Dark Theme Top Announcement Bar (Desktop Only) */}
-      <div className="hidden lg:block bg-[#161412] text-stone-300 border-b border-white/10 py-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[11px] font-medium">
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center space-x-1.5 text-[#F3C287] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div className="hidden lg:block bg-[#161412] text-stone-300 border-b border-white/10 py-1.5 xl:py-2">
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-6 xl:px-8 flex items-center justify-between text-[10px] xl:text-[11px] font-medium">
+          <div className="flex items-center gap-2 xl:gap-4">
+            <span className="flex items-center gap-1.5 text-[#F3C287] font-semibold">
+              <span className="w-1.5 h-1.5 xl:w-2 xl:h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span>Bağcılar İmalat Atölyemiz Açık (09:00 - 19:30)</span>
             </span>
             <span className="text-stone-600">•</span>
-            <span className="flex items-center space-x-1.5 text-stone-300">
-              <MapPin className="w-3.5 h-3.5 text-[#B86B35]" />
-              <span>Bağcılar Kirazlı Mah. 1145 Sok. No: 4/A, İstanbul</span>
+            <span className="flex items-center gap-1.5 text-stone-300">
+              <MapPin className="w-3 h-3 xl:w-3.5 xl:h-3.5 text-[#B86B35]" />
+              <span className="hidden xl:inline">Bağcılar Kirazlı Mah. 1145 Sok. No: 4/A, İstanbul</span>
+              <span className="xl:hidden">Kirazlı Mah., Bağcılar / İstanbul</span>
             </span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-2 xl:gap-4">
             <a 
               href={INSTAGRAM_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="flex items-center space-x-1.5 text-stone-300 hover:text-[#F3C287] transition-colors"
+              className="flex items-center gap-1.5 text-stone-300 hover:text-[#F3C287] transition-colors"
             >
-              <Instagram className="w-3.5 h-3.5 text-[#B86B35]" />
+              <Instagram className="w-3 h-3 xl:w-3.5 xl:h-3.5 text-[#B86B35]" />
               <span>{INSTAGRAM_HANDLE}</span>
             </a>
             <span className="text-stone-600">•</span>
@@ -89,77 +90,77 @@ export const ChesterHeader: React.FC = () => {
           ? 'bg-white/95 backdrop-blur-md shadow-md py-2.5 sm:py-3 border-b border-stone-200/80' 
           : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b border-stone-200/80 py-2.5 sm:py-3.5'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4 lg:gap-8">
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
+          <div className="flex items-center justify-between gap-2 lg:gap-3 xl:gap-6">
             
-            {/* Brand Logo & Title - Fixed Width, Never Squished */}
-            <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
+            {/* Brand Logo & Title */}
+            <Link href="/" className="flex items-center space-x-2 lg:space-x-3 group flex-shrink-0">
               <img
                 src="/images/chester/chester_logo.jpg"
                 alt="Chester Time Logo"
-                className="w-11 h-11 sm:w-13 sm:h-13 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
+                className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-full object-cover border-2 border-[#B86B35]/60 shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
               />
               <div className="flex flex-col flex-shrink-0">
-                <span className="font-serif-luxe text-xl sm:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-tight whitespace-nowrap">
+                <span className="font-serif-luxe text-base min-[340px]:text-lg sm:text-xl lg:text-[22px] xl:text-2xl tracking-wide text-[#1C1917] group-hover:text-[#B86B35] transition-colors font-bold uppercase leading-tight whitespace-nowrap">
                   CHESTER TIME
                 </span>
-                <span className="text-[9px] sm:text-[10px] tracking-[0.12em] uppercase font-sans text-[#B86B35] font-semibold whitespace-nowrap">
+                <span className="hidden min-[340px]:block text-[8px] sm:text-[9px] lg:text-[10px] tracking-[0.1em] lg:tracking-[0.12em] uppercase font-sans text-[#B86B35] font-semibold whitespace-nowrap">
                   İmalatçıdan Doğrudan Chester
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav - Clean, Simplified & Spacious */}
-            <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7 flex-shrink-0">
+            {/* Desktop Nav — fluid spacing, compact at lg, spacious at xl+ */}
+            <nav className="hidden lg:flex items-center gap-3 xl:gap-5 2xl:gap-7 flex-shrink min-w-0">
               <Link
                 href="/kategori/kanepe-cesitleri"
-                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Kanepeler
               </Link>
               <Link
                 href="/kategori/berjer-puf-cesitleri"
-                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Berjer & Puf
               </Link>
               <Link
                 href="/kategori/kose-koltuk-takimlari"
-                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Köşe Takımları
               </Link>
               <Link
                 href="/kategori/oturma-takimlari"
-                className="text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-bold text-stone-800 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Oturma Takımları
               </Link>
               <Link
                 href="/kategori/tum-modeller"
-                className="text-xs uppercase tracking-wider font-bold text-[#B86B35] hover:text-[#944D1E] transition-colors whitespace-nowrap flex items-center space-x-1"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-bold text-[#B86B35] hover:text-[#944D1E] transition-colors whitespace-nowrap flex items-center gap-1"
               >
                 <span>Tüm Katalog</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#B86B35]/10 text-[#B86B35] font-bold">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#B86B35]/10 text-[#B86B35] font-bold leading-none">
                   {products.length}
                 </span>
               </Link>
               <Link
                 href="/#deliveries"
-                className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Teslimatlar
               </Link>
               <Link
                 href="/#showroom"
-                className="text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
+                className="text-[11px] xl:text-xs uppercase tracking-wider font-semibold text-stone-600 hover:text-[#B86B35] transition-colors whitespace-nowrap"
               >
                 Atölyemiz
               </Link>
             </nav>
 
             {/* Right Header Actions */}
-            <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2 xl:gap-3 flex-shrink-0">
               <div className="flex items-center">
                 <LanguageSwitcher isCompact />
               </div>
@@ -167,7 +168,7 @@ export const ChesterHeader: React.FC = () => {
               {/* Desktop Admin / Profile Button */}
               <button
                 onClick={() => setAdminModalOpen(true)}
-                className={`hidden sm:flex items-center space-x-1.5 px-3 py-2 rounded-full text-xs font-bold uppercase transition-all duration-200 cursor-pointer ${
+                className={`hidden lg:flex items-center space-x-1.5 px-2.5 xl:px-3 py-2 rounded-full text-[11px] xl:text-xs font-bold uppercase transition-all duration-200 cursor-pointer ${
                   isAdmin
                     ? 'bg-[#1C1917] text-[#F3C287] border border-[#B86B35] shadow'
                     : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
@@ -177,13 +178,13 @@ export const ChesterHeader: React.FC = () => {
               >
                 {isAdmin ? (
                   <>
-                    <ShieldCheck className="w-4 h-4 text-[#F3C287]" />
-                    <span className="text-[11px] font-semibold">Yönetici</span>
+                    <ShieldCheck className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-[#F3C287]" />
+                    <span className="text-[10px] xl:text-[11px] font-semibold">Yönetici</span>
                   </>
                 ) : (
                   <>
-                    <User className="w-4 h-4 text-stone-600" />
-                    <span className="text-[11px]">Giriş</span>
+                    <User className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-stone-600" />
+                    <span className="text-[10px] xl:text-[11px]">Giriş</span>
                   </>
                 )}
               </button>
@@ -192,10 +193,10 @@ export const ChesterHeader: React.FC = () => {
                 href={buildWhatsAppUrl(`Merhaba ${ATELIER_NAME}, koltuk modelleriniz hakkında katalog ve imalat fiyat listesi almak istiyorum.`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center space-x-2 px-4 py-2.5 rounded-full bg-[#1C1917] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#B86B35] transition-all duration-200 shadow-sm"
+                className="hidden lg:inline-flex items-center space-x-1.5 xl:space-x-2 px-3 xl:px-4 py-2 xl:py-2.5 rounded-full bg-[#1C1917] text-white text-[11px] xl:text-xs font-bold uppercase tracking-wider hover:bg-[#B86B35] transition-all duration-200 shadow-sm"
               >
                 <span>Fiyat Al</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
               </a>
 
               {/* Mobile Hamburger Button */}

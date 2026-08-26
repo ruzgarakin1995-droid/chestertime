@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Link from 'next/link';
 import { MapPin, Phone, ArrowUpRight } from 'lucide-react';
 import { ATELIER_NAME, ATELIER_TAGLINE, DISPLAY_PHONE, BUSINESS_ADDRESS, INSTAGRAM_HANDLE, INSTAGRAM_URL, buildWhatsAppUrl } from '../mockData';
 
@@ -54,10 +55,12 @@ export const ChesterFooter: React.FC = () => {
               Hizmetlerimiz
             </h4>
             <ul className="space-y-2 text-xs text-stone-400 font-light">
-              <li><a href="#fabric-studio" className="hover:text-white transition-colors">Kumaş & Deri Kartelası</a></li>
-              <li><a href="#deliveries" className="hover:text-white transition-colors">Müşteri Teslimatları</a></li>
-              <li><a href="#craftsmanship" className="hover:text-white transition-colors">Masif Gürgen İskelet</a></li>
-              <li><a href="#showroom" className="hover:text-white transition-colors">Atölye Ziyareti</a></li>
+              <li><Link href="/chester-koltuk" className="hover:text-white transition-colors">Chester Koltuk</Link></li>
+              <li><Link href="/chester-koltuk-imalati" className="hover:text-white transition-colors">Chester Koltuk İmalatı</Link></li>
+              <li><Link href="/ozel-tasarim-koltuk" className="hover:text-white transition-colors">Özel Tasarım Koltuk</Link></li>
+              <li><Link href="/koltuk-doseme" className="hover:text-white transition-colors">Koltuk Döşeme &amp; Yenileme</Link></li>
+              <li><Link href="/bagcilar-chester-koltuk" className="hover:text-white transition-colors">Bağcılar Chester Koltuk</Link></li>
+              <li><Link href="/kirazli-koltuk-doseme" className="hover:text-white transition-colors">Kirazlı Koltuk Döşeme</Link></li>
             </ul>
           </div>
 

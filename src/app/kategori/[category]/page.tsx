@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: { category: string 
   return {
     title,
     description: 'Chester Time imalatçı fiyatlarıyla özel üretim Chester koltuk modelleri ve kategorileri.',
+    alternates: { canonical: `https://www.chestertime.com/kategori/${params.category}` },
   };
 }
 

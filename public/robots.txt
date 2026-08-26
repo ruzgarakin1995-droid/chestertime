@@ -1,0 +1,8 @@
+User-agent: *
+Disallow:
+
+# Prefer indexed, point to sitemap
+Sitemap: https://www.chestertime.com/sitemap.xml
+
+# Crawl-delay can be configured if necessary
+# Crawl-delay: 10

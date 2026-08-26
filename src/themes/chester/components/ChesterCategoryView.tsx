@@ -156,7 +156,7 @@ function CategoryViewContent({ categorySlug }: { categorySlug: string }) {
 
               {/* Action Buttons */}
               <div className="relative z-10 mt-6 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <Link
                     href="/"
                     className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider backdrop-blur-md transition-colors"
